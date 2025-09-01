@@ -10,6 +10,10 @@ import json
 from exporter_modules import virtual_machines
 from exporter_modules import network
 from exporter_modules import resource_group
+from exporter_modules import storage
+from exporter_modules import keyvault
+from exporter_modules import containerregistry
+from exporter_modules import dns
 
 config = {
     **dotenv_values(".env"),
@@ -65,6 +69,7 @@ def main():
 
         for resource in client.resources.list_by_resource_group(rg.name):
             result = None
+            file_path = f"{resource.name}.json"
 
             match resource.type:
                 case "Microsoft.Network/virtualNetworks":
@@ -79,6 +84,17 @@ def main():
                     result = network.network_security_group(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/networkInterfaces":
                     result = network.network_interface(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.Storage/storageAccounts":
+                    result = storage.storage_account(credential, subscription_id, rg.name, resource.name)                    
+                case "Microsoft.KeyVault/vaults":
+                    result = keyvault.vault(credential, subscription_id, rg.name, resource.name)                    
+                case "Microsoft.ContainerRegistry/registries":
+                    result = containerregistry.registry(credential, subscription_id, rg.name, resource.name)                    
+                case "Microsoft.Network/dnszones":
+                    dns_path = pathlib.Path(rg_path, "dns")
+                    dns_path.mkdir(parents=True, exist_ok=True)
+                    file_path = pathlib.Path("dns", f"{resource.name}.json")
+                    result = dns.dns_zone(credential, subscription_id, rg.name, resource.name)                    
                 case "Microsoft.Network/networkWatchers":
                     pass
                 case _:
@@ -86,7 +102,7 @@ def main():
 
 
             if result is not None:            
-                file_path = pathlib.Path(rg_path, f"{resource.name}.json")
+                file_path = pathlib.Path(rg_path, file_path)
                 write_azure_data(result, file_path)
 
 

@@ -54,3 +54,14 @@ def network_interface(credential, subscription_id, resource_group_name, resource
         resource_name
     )
     return network_interface
+
+def dns_zone(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    network_interface = client.network_interfaces.get(
+        resource_group_name,
+        resource_name
+    )
+    return network_interface
