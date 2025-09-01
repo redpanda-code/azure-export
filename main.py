@@ -15,6 +15,7 @@ from exporter_modules import keyvault
 from exporter_modules import containerregistry
 from exporter_modules import dns
 from exporter_modules import postgresql
+from exporter_modules import sql
 
 config = {
     **dotenv_values(".env"),
@@ -60,7 +61,6 @@ def main():
 
     client = ResourceManagementClient(credential=credential, subscription_id=subscription_id)
     for rg in client.resource_groups.list():
-        print(f"Resource group: {rg.name} in {rg.location}")
         rg_path = pathlib.Path(output_path, rg.name)
         rg_path.mkdir(parents=True, exist_ok=True)
 
@@ -68,7 +68,11 @@ def main():
         file_path = pathlib.Path(rg_path, f"{rg.name}.json")
         write_azure_data(result, file_path)
 
-        for resource in client.resources.list_by_resource_group(rg.name):
+        resources = list(client.resources.list_by_resource_group(rg.name))
+
+        print(f"Resource group: {rg.name} in {rg.location} ({len(resources)} resources)")
+
+        for resource in resources:
             result = None
             file_path = f"{resource.name}.json"
 
@@ -97,31 +101,61 @@ def main():
                 case "Microsoft.ContainerRegistry/registries":
                     result = containerregistry.registry(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/dnszones":
-                    dns_path = pathlib.Path(rg_path, "dns")
-                    dns_path.mkdir(parents=True, exist_ok=True)
+                    p = pathlib.Path(rg_path, "dns")
+                    p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path("dns", f"{resource.name}.json")
                     result = dns.dns_zone(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/privateDnsZones":
-                    dns_path = pathlib.Path(rg_path, "private_dns")
-                    dns_path.mkdir(parents=True, exist_ok=True)
+                    p = pathlib.Path(rg_path, "private_dns")
+                    p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path("private_dns", f"{resource.name}.json")
                     result = dns.private_zone(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.DBforPostgreSQL/flexibleServers":
                     result = postgresql.server(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/publicIPPrefixes":
+                    result = network.public_ip_prefix(credential, subscription_id, rg.name, resource.name)
                     pass
                 case "Microsoft.Sql/servers":
-                    print("manage sql servers manually")
-                    pass
+                    p = pathlib.Path(rg_path, resource.name)
+                    p.mkdir(parents=True, exist_ok=True)
+                    file_path = pathlib.Path(resource.name, f"{resource.name}.json")
+                    result = sql.server(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Sql/servers/elasticpools":
-                    print("manage sql elastic pools manually")
-                    pass
+                    server_name, pool_name = resource.name.split("/")
+                    p = pathlib.Path(rg_path, server_name)
+                    p.mkdir(parents=True, exist_ok=True)
+                    file_path = pathlib.Path(server_name, f"{pool_name}.json")
+                    result = sql.elastic_pool(credential, subscription_id, rg.name, server_name, pool_name)
                 case "Microsoft.Sql/servers/databases":
-                    print("manage sql databases manually")
-                    pass
+                    server_name, database_name = resource.name.split("/")
+                    p = pathlib.Path(rg_path, server_name, "databases")
+                    p.mkdir(parents=True, exist_ok=True)
+                    file_path = pathlib.Path(server_name, "databases", f"{database_name}.json")
+                    result = sql.database(credential, subscription_id, rg.name, server_name, database_name)
                 # Microsoft.Compute/images
                 # Microsoft.Compute/virtualMachineScaleSets
-                case "Microsoft.Network/networkWatchers" | "Microsoft.EventGrid/systemsTopics":
+                # "Microsoft.Network/connections"
+                # "Microsoft.Network/virtualNetworkGateways"
+                # "Microsoft.Network/natGateways"
+                # "Microsoft.Network/localNetworkGateways"
+                # "Microsoft.Compute/sshPublicKeys"
+                # "Microsoft.Network/privateDnsZones/virtualNetworkLinks"
+                # "microsoft.insights/webtests"
+                case "Microsoft.DomainRegistration/domains":
+                    pass # ignoring domain registrations
+                case "Microsoft.Automation/automationAccounts" | "Microsoft.Automation/automationAccounts/runbooks":
+                    pass # ignoring automation for now
+                case "Microsoft.RecoveryServices/vaults" | "Microsoft.Compute/restorePointCollections":
+                    pass # ignoring recovery services for now
+                case "Microsoft.ContainerInstance/containerGroups":
+                    pass # ignoring container instances for now
+                case "Microsoft.DocumentDb/databaseAccounts":
+                    pass # ignoring documentdb for now
+                case "microsoft.visualstudio/account":
+                    pass # ignoring devops subscription
+                case "microsoft.insights/actiongroups" | "Microsoft.OperationalInsights/workspaces" | "Microsoft.AlertsManagement/actionRules":
+                    pass # ignoring monitoring for now
+                case "Microsoft.Network/networkWatchers" | "Microsoft.EventGrid/systemTopics":
                     pass # ignore azure defaults
                 case "Microsoft.Insights/metricalerts" | "Microsoft.Insights/workbooks" | "Microsoft.AlertsManagement/prometheusRuleGroups" | "Microsoft.Insights/dataCollectionEndpoints" | "Microsoft.Insights/dataCollectionRules":
                     pass # ignore metrics stuff for now
