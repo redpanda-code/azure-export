@@ -26,6 +26,9 @@ Each folder represents a resource group and contains the definitions.
 - do I need to cache client auth?
 - can you group VM related resources? (disk, ip, nsg)
 
+# Learnings
+- annoying that storage account does not implement ".get()" to match all other apis
+- annoying that sub resources do not take a resource name, instead want you to split the properties for that sub resource (sql databases).
 
 # links
 - code examples https://github.com/Azure-Samples/azure-samples-python-management/tree/main/samples

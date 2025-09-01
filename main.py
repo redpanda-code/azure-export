@@ -115,10 +115,11 @@ def main():
                     file_path = pathlib.Path("private_dns", f"{resource.name}.json")
                     result = dns.private_zone(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/privatednszones/virtualnetworklinks":
-                    p = pathlib.Path(rg_path, "private_dns")
+                    dns_name, link_name = resource.name.split("/")
+                    p = pathlib.Path(rg_path, "private_dns_link")
                     p.mkdir(parents=True, exist_ok=True)
-                    file_path = pathlib.Path("private_dns", f"{resource.name}.json")
-                    result = dns.virtual_network_link(credential, subscription_id, rg.name, resource.name)
+                    file_path = pathlib.Path("private_dns_link", f"{link_name}.json")
+                    result = dns.virtual_network_link(credential, subscription_id, rg.name, dns_name, link_name)
                 case "microsoft.dbforpostgresql/flexibleservers":
                     result = postgresql.server(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/publicipprefixes":

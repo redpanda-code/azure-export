@@ -24,13 +24,14 @@ def private_zone(credential, subscription_id, resource_group_name, resource_name
     )
     return private_zone
 
-def virtual_network_link(credential, subscription_id, resource_group_name, resource_name):
+def virtual_network_link(credential, subscription_id, resource_group_name, private_zone_name, virtual_network_link_name):
     client = PrivateDnsManagementClient(
         credential=credential,
         subscription_id=subscription_id
     )
     virtual_network_link = client.virtual_network_links.get(
         resource_group_name,
-        resource_name
+        private_zone_name,
+        virtual_network_link_name
     )
     return virtual_network_link
