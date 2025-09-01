@@ -14,6 +14,7 @@ from exporter_modules import storage
 from exporter_modules import keyvault
 from exporter_modules import containerregistry
 from exporter_modules import dns
+from exporter_modules import postgresql
 
 config = {
     **dotenv_values(".env"),
@@ -48,11 +49,11 @@ def main():
         client_id=config["AZURE_CLIENT_ID"],
         client_secret=config["AZURE_CLIENT_SECRET"]
     )
-    
+
     subscription_id = config.get("AZURE_SUBSCRIPTION_ID")
     if not subscription_id:
         raise ValueError("AZURE_SUBSCRIPTION_ID not found in configuration")
-    
+
     output_path = pathlib.Path("export/")
     output_path.mkdir(parents=True, exist_ok=True)
 
@@ -71,6 +72,9 @@ def main():
             result = None
             file_path = f"{resource.name}.json"
 
+            if str(resource.type).endswith("/extensions"):
+                continue
+
             match resource.type:
                 case "Microsoft.Network/virtualNetworks":
                     result = network.virtual_network(credential, subscription_id, rg.name, resource.name)
@@ -84,24 +88,39 @@ def main():
                     result = network.network_security_group(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/networkInterfaces":
                     result = network.network_interface(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.Network/loadBalancers":
+                    result = network.load_balancer(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Storage/storageAccounts":
-                    result = storage.storage_account(credential, subscription_id, rg.name, resource.name)                    
+                    result = storage.storage_account(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.KeyVault/vaults":
-                    result = keyvault.vault(credential, subscription_id, rg.name, resource.name)                    
+                    result = keyvault.vault(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.ContainerRegistry/registries":
-                    result = containerregistry.registry(credential, subscription_id, rg.name, resource.name)                    
+                    result = containerregistry.registry(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/dnszones":
                     dns_path = pathlib.Path(rg_path, "dns")
                     dns_path.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path("dns", f"{resource.name}.json")
-                    result = dns.dns_zone(credential, subscription_id, rg.name, resource.name)                    
-                case "Microsoft.Network/networkWatchers":
+                    result = dns.dns_zone(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.Network/privateDnsZones":
+                    dns_path = pathlib.Path(rg_path, "private_dns")
+                    dns_path.mkdir(parents=True, exist_ok=True)
+                    file_path = pathlib.Path("private_dns", f"{resource.name}.json")
+                    result = dns.private_zone(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.DBforPostgreSQL/flexibleServers":
+                    result = postgresql.server(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.Sql/servers":
+                    pass
+                case "Microsoft.Sql/servers/elasticpools":
+                    pass
+                case "Microsoft.Sql/servers/databases":
+                    pass
+                case "Microsoft.Network/networkWatchers" | "Microsoft.EventGrid/systemsTopics" | "microsoft.insights/metricalerts":
                     pass
                 case _:
                     print(f"  Resource: {resource.name} of type {resource.type}")
 
 
-            if result is not None:            
+            if result is not None:
                 file_path = pathlib.Path(rg_path, file_path)
                 write_azure_data(result, file_path)
 

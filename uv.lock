@@ -36,6 +36,8 @@ dependencies = [
     { name = "azure-mgmt-dns" },
     { name = "azure-mgmt-keyvault" },
     { name = "azure-mgmt-network" },
+    { name = "azure-mgmt-postgresqlflexibleservers" },
+    { name = "azure-mgmt-privatedns" },
     { name = "azure-mgmt-resource" },
     { name = "azure-mgmt-storage" },
     { name = "jsonpickle" },
@@ -50,6 +52,8 @@ requires-dist = [
     { name = "azure-mgmt-dns", specifier = "==9.0.0" },
     { name = "azure-mgmt-keyvault", specifier = "==12.0.0" },
     { name = "azure-mgmt-network", specifier = "==29.0.0" },
+    { name = "azure-mgmt-postgresqlflexibleservers", specifier = "==1.1.0" },
+    { name = "azure-mgmt-privatedns", specifier = "==1.2.0" },
     { name = "azure-mgmt-resource", specifier = "==24.0.0" },
     { name = "azure-mgmt-storage", specifier = "==23.0.1" },
     { name = "jsonpickle", specifier = ">=4.1.1" },
@@ -157,6 +161,36 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/19/b6/fbd5320047659af1bd26aa55529dbe5a8c2faeeb62a8aadc72e1dd88f66c/azure_mgmt_network-29.0.0.tar.gz", hash = "sha256:577fbc76a195f744b97bac4275e11279f7f3e63c659d98773f3b4a9a6e0943b9", size = 684284, upload-time = "2025-05-23T03:06:56.309Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/20/93/949392272f177f8e92dcb916afd20f67ceae62998e798e4a3d98c5f59af3/azure_mgmt_network-29.0.0-py3-none-any.whl", hash = "sha256:c04dc0d9f6b936abe4ec7c5fa9cee1514795b1f84d2742dead2115dcde33476c", size = 608014, upload-time = "2025-05-23T03:06:58.557Z" },
+]
+
+[[package]]
+name = "azure-mgmt-postgresqlflexibleservers"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-common" },
+    { name = "azure-mgmt-core" },
+    { name = "isodate" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/53/03/c3dacaff6551fdd482a13f4e4b3628ab9fdada888159ab9547ebc1763d7c/azure_mgmt_postgresqlflexibleservers-1.1.0.tar.gz", hash = "sha256:9ede9d8ba63e9d2879cb74adc903c649af3bc5460a02787287b0cd18d754af14", size = 115321, upload-time = "2025-03-25T07:31:55.806Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fa/ae/7bed1540285c20dc09bf794c91f242e0f9c1c6a0508910b669d1c4eabcb5/azure_mgmt_postgresqlflexibleservers-1.1.0-py3-none-any.whl", hash = "sha256:87ddb5a5e6d12c45769485d234cfe0322140e3a0a7636d0e61fb00ac544b5d20", size = 220299, upload-time = "2025-03-25T07:31:56.959Z" },
+]
+
+[[package]]
+name = "azure-mgmt-privatedns"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-common" },
+    { name = "azure-mgmt-core" },
+    { name = "isodate" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1a/42/0bd8a368afd89249dc28c5eb46a9b9ce209ab36967ab55a7bda1f60b887d/azure_mgmt_privatedns-1.2.0.tar.gz", hash = "sha256:34231872f01b94f6195d8ee5428e17469252ed04ea0828d52325ebe7bf0a120b", size = 58614, upload-time = "2024-09-23T06:08:45.752Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/eb/eb/2f7550f495570e5bba51dbbeb02b0c6e26fe683afab7fc0a9cc7d2fa439d/azure_mgmt_privatedns-1.2.0-py3-none-any.whl", hash = "sha256:1bf9d978de4d74fc683d9af42f8135dcd565075f851c7227197924dd72b0b539", size = 68601, upload-time = "2024-09-23T06:08:46.863Z" },
 ]
 
 [[package]]

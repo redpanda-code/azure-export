@@ -11,6 +11,8 @@ dependencies = [
     "azure-mgmt-dns==9.0.0",
     "azure-mgmt-keyvault==12.0.0",
     "azure-mgmt-network==29.0.0",
+    "azure-mgmt-postgresqlflexibleservers==1.1.0",
+    "azure-mgmt-privatedns==1.2.0",
     "azure-mgmt-resource==24.0.0",
     "azure-mgmt-storage==23.0.1",
     "jsonpickle>=4.1.1",

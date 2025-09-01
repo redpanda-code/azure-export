@@ -55,6 +55,18 @@ def network_interface(credential, subscription_id, resource_group_name, resource
     )
     return network_interface
 
+def load_balancer(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    load_balancer = client.load_balancers.get(
+        resource_group_name,
+        resource_name
+    )
+    return load_balancer
+
+
 def dns_zone(credential, subscription_id, resource_group_name, resource_name):
     client = NetworkManagementClient(
         credential=credential,

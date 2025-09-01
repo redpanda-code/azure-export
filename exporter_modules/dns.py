@@ -1,4 +1,5 @@
 from azure.mgmt.dns import DnsManagementClient
+from azure.mgmt.privatedns import PrivateDnsManagementClient
 
 def dns_zone(credential, subscription_id, resource_group_name, resource_name):
     client = DnsManagementClient(
@@ -10,3 +11,15 @@ def dns_zone(credential, subscription_id, resource_group_name, resource_name):
         resource_name
     )
     return dns_zone
+
+
+def private_zone(credential, subscription_id, resource_group_name, resource_name):
+    client = PrivateDnsManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    private_zone = client.private_zones.get(
+        resource_group_name,
+        resource_name
+    )
+    return private_zone
