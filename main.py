@@ -80,16 +80,20 @@ def main():
                 continue
 
             match resource.type:
-                case "Microsoft.Network/virtualNetworks":
-                    result = network.virtual_network(credential, subscription_id, rg.name, resource.name)
+                # VM, disk, nsg, ip often go together, maybe they can be grouped
                 case "Microsoft.Compute/virtualMachines":
                     result = virtual_machines.machine(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Compute/disks":
                     result = virtual_machines.disk(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/publicIPAddresses":
-                    result = network.public_ip_address(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/networkSecurityGroups":
                     result = network.network_security_group(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.Network/publicIPAddresses":
+                    result = network.public_ip_address(credential, subscription_id, rg.name, resource.name)
+
+                case "Microsoft.Network/virtualNetworks":
+                    result = network.virtual_network(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.Compute/images":
+                    result = virtual_machines.image(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/networkInterfaces":
                     result = network.network_interface(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/loadBalancers":
@@ -110,6 +114,7 @@ def main():
                     p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path("private_dns", f"{resource.name}.json")
                     result = dns.private_zone(credential, subscription_id, rg.name, resource.name)
+                # "Microsoft.Network/privateDnsZones/virtualNetworkLinks"
                 case "Microsoft.DBforPostgreSQL/flexibleServers":
                     result = postgresql.server(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.Network/publicIPPrefixes":
@@ -132,7 +137,8 @@ def main():
                     p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path(server_name, "databases", f"{database_name}.json")
                     result = sql.database(credential, subscription_id, rg.name, server_name, database_name)
-                # Microsoft.Compute/images
+
+                # "Microsoft.ContainerService/managedClusters"
                 # Microsoft.Compute/virtualMachineScaleSets
                 # "Microsoft.Network/connections"
                 # "Microsoft.Network/virtualNetworkGateways"
@@ -153,7 +159,7 @@ def main():
                     pass # ignoring documentdb for now
                 case "microsoft.visualstudio/account":
                     pass # ignoring devops subscription
-                case "microsoft.insights/actiongroups" | "Microsoft.OperationalInsights/workspaces" | "Microsoft.AlertsManagement/actionRules":
+                case "microsoft.insights/actiongroups" | "Microsoft.OperationalInsights/workspaces" | "Microsoft.AlertsManagement/actionRules" | "Microsoft.Insights/actiongroups" | "microsoft.insights/metricalerts" | "microsoft.monitor/accounts" | "microsoft.monitor/accounts" | "microsoft.alertsmanagement/smartDetectorAlertRules":
                     pass # ignoring monitoring for now
                 case "Microsoft.Network/networkWatchers" | "Microsoft.EventGrid/systemTopics":
                     pass # ignore azure defaults
