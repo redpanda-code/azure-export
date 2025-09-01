@@ -24,6 +24,7 @@ Each folder represents a resource group and contains the definitions.
 - does every resource have a CreatedAt?
 - Is there an existing DTO for each resource in the bicep codebase
 - do I need to cache client auth?
+- can you group VM related resources? (disk, ip, nsg)
 
 
 # links

@@ -108,13 +108,24 @@ def main():
                     result = dns.private_zone(credential, subscription_id, rg.name, resource.name)
                 case "Microsoft.DBforPostgreSQL/flexibleServers":
                     result = postgresql.server(credential, subscription_id, rg.name, resource.name)
+                case "Microsoft.Network/publicIPPrefixes":
+                    pass
                 case "Microsoft.Sql/servers":
+                    print("manage sql servers manually")
                     pass
                 case "Microsoft.Sql/servers/elasticpools":
+                    print("manage sql elastic pools manually")
                     pass
                 case "Microsoft.Sql/servers/databases":
+                    print("manage sql databases manually")
                     pass
-                case "Microsoft.Network/networkWatchers" | "Microsoft.EventGrid/systemsTopics" | "microsoft.insights/metricalerts":
+                # Microsoft.Compute/images
+                # Microsoft.Compute/virtualMachineScaleSets
+                case "Microsoft.Network/networkWatchers" | "Microsoft.EventGrid/systemsTopics":
+                    pass # ignore azure defaults
+                case "Microsoft.Insights/metricalerts" | "Microsoft.Insights/workbooks" | "Microsoft.AlertsManagement/prometheusRuleGroups" | "Microsoft.Insights/dataCollectionEndpoints" | "Microsoft.Insights/dataCollectionRules":
+                    pass # ignore metrics stuff for now
+                case "Microsoft.ManagedIdentity/userAssignedIdentities" | "Microsoft.OperationsManagement/solutions" | "Microsoft.Portal/dashboards":
                     pass
                 case _:
                     print(f"  Resource: {resource.name} of type {resource.type}")
