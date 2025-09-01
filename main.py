@@ -79,59 +79,63 @@ def main():
             if str(resource.type).endswith("/extensions"):
                 continue
 
-            match resource.type:
+            match resource.type.lower():
                 # VM, disk, nsg, ip often go together, maybe they can be grouped
-                case "Microsoft.Compute/virtualMachines":
+                case "microsoft.compute/virtualmachines":
                     result = virtual_machines.machine(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Compute/disks":
+                case "microsoft.compute/disks":
                     result = virtual_machines.disk(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/networkSecurityGroups":
+                case "microsoft.network/networksecuritygroups":
                     result = network.network_security_group(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/publicIPAddresses":
+                case "microsoft.network/publicipaddresses":
                     result = network.public_ip_address(credential, subscription_id, rg.name, resource.name)
 
-                case "Microsoft.Network/virtualNetworks":
+                case "microsoft.network/virtualnetworks":
                     result = network.virtual_network(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Compute/images":
+                case "microsoft.compute/images":
                     result = virtual_machines.image(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/networkInterfaces":
+                case "microsoft.network/networkinterfaces":
                     result = network.network_interface(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/loadBalancers":
+                case "microsoft.network/loadbalancers":
                     result = network.load_balancer(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Storage/storageAccounts":
+                case "microsoft.storage/storageaccounts":
                     result = storage.storage_account(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.KeyVault/vaults":
+                case "microsoft.keyvault/vaults":
                     result = keyvault.vault(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.ContainerRegistry/registries":
+                case "microsoft.containerregistry/registries":
                     result = containerregistry.registry(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/dnszones":
+                case "microsoft.network/dnszones":
                     p = pathlib.Path(rg_path, "dns")
                     p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path("dns", f"{resource.name}.json")
                     result = dns.dns_zone(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/privateDnsZones":
+                case "microsoft.network/privatednszones":
                     p = pathlib.Path(rg_path, "private_dns")
                     p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path("private_dns", f"{resource.name}.json")
                     result = dns.private_zone(credential, subscription_id, rg.name, resource.name)
-                # "Microsoft.Network/privateDnsZones/virtualNetworkLinks"
-                case "Microsoft.DBforPostgreSQL/flexibleServers":
+                case "microsoft.network/privatednszones/virtualnetworklinks":
+                    p = pathlib.Path(rg_path, "private_dns")
+                    p.mkdir(parents=True, exist_ok=True)
+                    file_path = pathlib.Path("private_dns", f"{resource.name}.json")
+                    result = dns.virtual_network_link(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.dbforpostgresql/flexibleservers":
                     result = postgresql.server(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Network/publicIPPrefixes":
+                case "microsoft.network/publicipprefixes":
                     result = network.public_ip_prefix(credential, subscription_id, rg.name, resource.name)
                     pass
-                case "Microsoft.Sql/servers":
+                case "microsoft.sql/servers":
                     p = pathlib.Path(rg_path, resource.name)
                     p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path(resource.name, f"{resource.name}.json")
                     result = sql.server(credential, subscription_id, rg.name, resource.name)
-                case "Microsoft.Sql/servers/elasticpools":
+                case "microsoft.sql/servers/elasticpools":
                     server_name, pool_name = resource.name.split("/")
                     p = pathlib.Path(rg_path, server_name)
                     p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path(server_name, f"{pool_name}.json")
                     result = sql.elastic_pool(credential, subscription_id, rg.name, server_name, pool_name)
-                case "Microsoft.Sql/servers/databases":
+                case "microsoft.sql/servers/databases":
                     server_name, database_name = resource.name.split("/")
                     p = pathlib.Path(rg_path, server_name, "databases")
                     p.mkdir(parents=True, exist_ok=True)
@@ -146,26 +150,29 @@ def main():
                 # "Microsoft.Network/localNetworkGateways"
                 # "Microsoft.Compute/sshPublicKeys"
                 # "Microsoft.Network/privateDnsZones/virtualNetworkLinks"
-                # "microsoft.insights/webtests"
-                case "Microsoft.DomainRegistration/domains":
+                case "microsoft.insights/webtests":
+                    pass
+                case "microsoft.domainregistration/domains":
                     pass # ignoring domain registrations
-                case "Microsoft.Automation/automationAccounts" | "Microsoft.Automation/automationAccounts/runbooks":
+                case "microsoft.automation/automationaccounts" | "microsoft.automation/automationaccounts/runbooks":
                     pass # ignoring automation for now
-                case "Microsoft.RecoveryServices/vaults" | "Microsoft.Compute/restorePointCollections":
+                case "microsoft.recoveryservices/vaults" | "microsoft.compute/restorepointcollections" | "microsoft.dataprotection/backupvaults":
                     pass # ignoring recovery services for now
-                case "Microsoft.ContainerInstance/containerGroups":
+                case "microsoft.containerinstance/containergroups":
                     pass # ignoring container instances for now
-                case "Microsoft.DocumentDb/databaseAccounts":
+                case "microsoft.documentdb/databaseaccounts":
                     pass # ignoring documentdb for now
+                case "microsoft.maintenance/maintenanceconfigurations":
+                    pass
                 case "microsoft.visualstudio/account":
                     pass # ignoring devops subscription
-                case "microsoft.insights/actiongroups" | "Microsoft.OperationalInsights/workspaces" | "Microsoft.AlertsManagement/actionRules" | "Microsoft.Insights/actiongroups" | "microsoft.insights/metricalerts" | "microsoft.monitor/accounts" | "microsoft.monitor/accounts" | "microsoft.alertsmanagement/smartDetectorAlertRules":
+                case "microsoft.dashboard/grafana" | "microsoft.insights/components" | "microsoft.insights/actiongroups" | "microsoft.operationalinsights/workspaces" | "microsoft.alertsmanagement/actionrules" | "microsoft.insights/metricalerts" | "microsoft.monitor/accounts" | "microsoft.alertsmanagement/smartdetectoralertrules":
                     pass # ignoring monitoring for now
-                case "Microsoft.Network/networkWatchers" | "Microsoft.EventGrid/systemTopics":
+                case "microsoft.network/networkwatchers" | "microsoft.eventgrid/systemtopics":
                     pass # ignore azure defaults
-                case "Microsoft.Insights/metricalerts" | "Microsoft.Insights/workbooks" | "Microsoft.AlertsManagement/prometheusRuleGroups" | "Microsoft.Insights/dataCollectionEndpoints" | "Microsoft.Insights/dataCollectionRules":
+                case "microsoft.insights/metricalerts" | "microsoft.insights/workbooks" | "microsoft.alertsmanagement/prometheusrulegroups" | "microsoft.insights/datacollectionendpoints" | "microsoft.insights/datacollectionrules":
                     pass # ignore metrics stuff for now
-                case "Microsoft.ManagedIdentity/userAssignedIdentities" | "Microsoft.OperationsManagement/solutions" | "Microsoft.Portal/dashboards":
+                case "microsoft.managedidentity/userassignedidentities" | "microsoft.operationsmanagement/solutions" | "microsoft.portal/dashboards":
                     pass
                 case _:
                     print(f"  Resource: {resource.name} of type {resource.type}")
