@@ -44,6 +44,8 @@ def write_azure_data(result, file_path):
     d_obj = json.loads(d_json)
     d_obj = remove_property_recursive(d_obj, "etag")
     d_obj = remove_property_recursive(d_obj, "py/object")
+    d_obj = remove_property_recursive(d_obj, "force_update_tag")
+    d_obj = remove_property_recursive(d_obj, "earliest_restore_date")
     with open(file_path, "w") as f:
         f.write(json.dumps(d_obj, indent=2))
 
