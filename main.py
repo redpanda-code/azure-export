@@ -1,4 +1,5 @@
 import os
+import sys
 from dotenv import dotenv_values
 from azure.identity import ClientSecretCredential
 from azure.mgmt.resource import ResourceManagementClient
@@ -46,25 +47,51 @@ def write_azure_data(result, file_path):
     with open(file_path, "w") as f:
         f.write(json.dumps(d_obj, indent=2))
 
+def print_help():
+    print("Usage: python main.py <output_directory>")
+    print("       uv run main.py <output_directory>")
+    print("")
+    print("Arguments:")
+    print("  output_directory    Directory where exported Azure resources will be saved")
+    print("")
+    print("Example:")
+    print("  python main.py ./my-export")
+    print("  uv run main.py /tmp/azure-backup")
+
 def main():
+    # Check for command line arguments
+    if len(sys.argv) < 2:
+        print_help()
+        sys.exit(1)
+
+    output_dir = sys.argv[1]
+
     credential = ClientSecretCredential(
         tenant_id=config["AZURE_TENANT_ID"],
         client_id=config["AZURE_CLIENT_ID"],
         client_secret=config["AZURE_CLIENT_SECRET"]
     )
 
+    ignore_resource_groups = config.get("IGNORE_RESOURCE_GROUPS", "").split(",")
+    ignore_resources = config.get("IGNORE_RESOURCES", "").split(",")
+
     subscription_id = config.get("AZURE_SUBSCRIPTION_ID")
     if not subscription_id:
         raise ValueError("AZURE_SUBSCRIPTION_ID not found in configuration")
 
-    output_path = pathlib.Path("export/")
+    output_path = pathlib.Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
 
     client = ResourceManagementClient(credential=credential, subscription_id=subscription_id)
     for rg in client.resource_groups.list():
 
+        if rg.name in ignore_resource_groups:
+            print(f"Ignoring resource group {rg.name}")
+            continue
+
         if rg.name.startswith("MA_"):
+            print(f"Ignoring MA_ resource group {rg.name}")
             continue # skipping automatic created monitoring resource groups
 
         rg_path = pathlib.Path(output_path, rg.name)
@@ -81,6 +108,10 @@ def main():
         for resource in resources:
             result = None
             file_path = f"{resource.name}.json"
+
+            if resource.name in ignore_resources:
+                print(f"  Ignoring resource {resource.name}")
+                continue
 
             if str(resource.type).endswith("/extensions"):
                 continue
