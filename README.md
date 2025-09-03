@@ -5,6 +5,8 @@ Each folder represents a resource group and contains the definitions.
 
 
 # Getting Started
+> You don't need to use uv, a requirements.txt has been provided for pip users.
+
 1. Create an application under "App registrations"
 2. Under Manage > Certificate&secrets, create a new client secret
 3. Under Subscription > IAM, add role Reader for your created application
@@ -38,3 +40,6 @@ Each folder represents a resource group and contains the definitions.
 # bugs found
 - storage_accounts.get_properties() should be .get()
 - resource group name should not be optional
+
+# creating requirements
+uv export --no-annotate --no-hashes > requirements.txt 
