@@ -89,7 +89,38 @@ def nat_gateway(credential, subscription_id, resource_group_name, resource_name)
     )
     return nat_gateway
 
+def route_table(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    route_table = client.route_tables.get(
+        resource_group_name,
+        resource_name
+    )
+    return route_table
 
+def local_network_gateway(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    local_network_gateway = client.local_network_gateways.get(
+        resource_group_name,
+        resource_name
+    )
+    return local_network_gateway
+
+def virtual_network_gateway(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    virtual_network_gateway = client.virtual_network_gateways.get(
+        resource_group_name,
+        resource_name
+    )
+    return virtual_network_gateway
 
 def dns_zone(credential, subscription_id, resource_group_name, resource_name):
     client = NetworkManagementClient(

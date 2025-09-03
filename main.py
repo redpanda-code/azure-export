@@ -17,6 +17,7 @@ from exporter_modules import dns
 from exporter_modules import postgresql
 from exporter_modules import sql
 from exporter_modules import containerservice
+from exporter_modules import sqlvirtualmachine
 
 config = {
     **dotenv_values(".env"),
@@ -151,6 +152,15 @@ def main():
                 case "microsoft.network/natgateways":
                     result = network.nat_gateway(credential, subscription_id, rg.name, resource.name)
 
+                case "microsoft.network/routetables":
+                    result = network.route_table(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.network/virtualnetworkgateways":
+                    result = network.virtual_network_gateway(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.network/localnetworkgateways":
+                    result = network.local_network_gateway(credential, subscription_id, rg.name, resource.name)
+
                 case "microsoft.compute/virtualmachinescalesets":
                     result = virtual_machines.virtual_machine_scale_set(credential, subscription_id, rg.name, resource.name)
 
@@ -158,16 +168,17 @@ def main():
                     result = containerservice.managed_cluster(credential, subscription_id, rg.name, resource.name)
 
 
+# sql database instance
+#   Resource: sql-yw-test of type Microsoft.Sql/managedInstances
+#   Resource: mi_default_275ce4f3-33df-44cc-8e85-f9545083b8bf_10-0-0-0-24 of type Microsoft.Network/networkIntentPolicies
+#   Resource: VirtualCluster38645a5d-0814-4ed9-bc20-16d3bb81d3bb of type Microsoft.Sql/virtualClusters
 
-                # "microsoft.sqlvirtualmachine/sqlvirtualmachines"
+                case "microsoft.sqlvirtualmachine/sqlvirtualmachines":
+                    result = sqlvirtualmachine.sql_virtual_machine(credential, subscription_id, rg.name, resource.name)
+                    file_path = f"{resource.name}_sqlvm.json" # avoid duplicate names
 
-                # "microsoft.network/virtualnetworkgateways"
-                #
-                # "microsoft.network/localnetworkgateways"
-                # "microsoft.compute/sshpublickeys"
-                # "microsoft.network/routetables"
-
-
+                case "microsoft.compute/sshpublickeys":
+                    pass # we cant export private key
 
                 case "microsoft.insights/webtests" | "microsoft.logic/workflows":
                     pass
@@ -200,6 +211,8 @@ def main():
 
 
             if result is not None:
+                # print id, name, type, location, tags
+
                 file_path = pathlib.Path(rg_path, file_path)
                 write_azure_data(result, file_path)
 

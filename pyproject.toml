@@ -16,6 +16,7 @@ dependencies = [
     "azure-mgmt-privatedns==1.2.0",
     "azure-mgmt-resource==24.0.0",
     "azure-mgmt-sql==3.0.1",
+    "azure-mgmt-sqlvirtualmachine==1.0.0b6",
     "azure-mgmt-storage==23.0.1",
     "jsonpickle>=4.1.1",
     "python-dotenv==1.1.1",

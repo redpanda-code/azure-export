@@ -25,10 +25,16 @@ Each folder represents a resource group and contains the definitions.
 - Is there an existing DTO for each resource in the bicep codebase
 - do I need to cache client auth?
 - can you group VM related resources? (disk, ip, nsg)
+- what is the base interface all resources share
 
 # Learnings
 - annoying that storage account does not implement ".get()" to match all other apis
 - annoying that sub resources do not take a resource name, instead want you to split the properties for that sub resource (sql databases).
+- Multiple resources can have the same name, this becomes visible with SQL virtual machines that create a VM and and SQL resource with the same name.
 
 # links
 - code examples https://github.com/Azure-Samples/azure-samples-python-management/tree/main/samples
+
+# bugs found
+- storage_accounts.get_properties() should be .get()
+- resource group name should not be optional

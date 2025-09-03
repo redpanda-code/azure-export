@@ -41,6 +41,7 @@ dependencies = [
     { name = "azure-mgmt-privatedns" },
     { name = "azure-mgmt-resource" },
     { name = "azure-mgmt-sql" },
+    { name = "azure-mgmt-sqlvirtualmachine" },
     { name = "azure-mgmt-storage" },
     { name = "jsonpickle" },
     { name = "python-dotenv" },
@@ -59,6 +60,7 @@ requires-dist = [
     { name = "azure-mgmt-privatedns", specifier = "==1.2.0" },
     { name = "azure-mgmt-resource", specifier = "==24.0.0" },
     { name = "azure-mgmt-sql", specifier = "==3.0.1" },
+    { name = "azure-mgmt-sqlvirtualmachine", specifier = "==1.0.0b6" },
     { name = "azure-mgmt-storage", specifier = "==23.0.1" },
     { name = "jsonpickle", specifier = ">=4.1.1" },
     { name = "python-dotenv", specifier = "==1.1.1" },
@@ -239,6 +241,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/3f/af/398c57d15064ea23475076cd087b1a143b66d33a029e6e47c4688ca32310/azure-mgmt-sql-3.0.1.zip", hash = "sha256:129042cc011225e27aee6ef2697d585fa5722e5d1aeb0038af6ad2451a285457", size = 996625, upload-time = "2021-07-16T02:07:56.492Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0e/46/db6dd21a237c32eb747c4a1790a6b0aafe1f52c55e07b90f732231027d47/azure_mgmt_sql-3.0.1-py2.py3-none-any.whl", hash = "sha256:1d1dd940d4d41be4ee319aad626341251572a5bf4a2addec71779432d9a1381f", size = 912881, upload-time = "2021-07-16T02:07:53.079Z" },
+]
+
+[[package]]
+name = "azure-mgmt-sqlvirtualmachine"
+version = "1.0.0b6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-common" },
+    { name = "azure-mgmt-core" },
+    { name = "isodate" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/69/64/705fc5e9c434fe895b5fd226cb82dfcf1cf63d135e354a89fe4ca5b969cb/azure-mgmt-sqlvirtualmachine-1.0.0b6.zip", hash = "sha256:7457061782e3e368b51bbe9f79f7d2bcf1eccf96aaead3cf522076d0c7082b0d", size = 108509, upload-time = "2023-06-21T04:23:30.962Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/64/dc/1d569cc693e7e234ef794497f5687b65b25b5d398bd128da65f04e8b3d26/azure_mgmt_sqlvirtualmachine-1.0.0b6-py3-none-any.whl", hash = "sha256:bf6381d216d51e2117bf3514b0d81193e5a77ea0a66d697e4f6f074668f0a47c", size = 95129, upload-time = "2023-06-21T04:23:32.739Z" },
 ]
 
 [[package]]
