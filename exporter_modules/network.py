@@ -78,6 +78,18 @@ def load_balancer(credential, subscription_id, resource_group_name, resource_nam
     )
     return load_balancer
 
+def nat_gateway(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    nat_gateway = client.nat_gateways.get(
+        resource_group_name,
+        resource_name
+    )
+    return nat_gateway
+
+
 
 def dns_zone(credential, subscription_id, resource_group_name, resource_name):
     client = NetworkManagementClient(

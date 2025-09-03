@@ -16,6 +16,7 @@ from exporter_modules import containerregistry
 from exporter_modules import dns
 from exporter_modules import postgresql
 from exporter_modules import sql
+from exporter_modules import containerservice
 
 config = {
     **dotenv_values(".env"),
@@ -61,6 +62,10 @@ def main():
 
     client = ResourceManagementClient(credential=credential, subscription_id=subscription_id)
     for rg in client.resource_groups.list():
+
+        if rg.name.startswith("MA_"):
+            continue # skipping automatic created monitoring resource groups
+
         rg_path = pathlib.Path(output_path, rg.name)
         rg_path.mkdir(parents=True, exist_ok=True)
 
@@ -143,15 +148,30 @@ def main():
                     file_path = pathlib.Path(server_name, "databases", f"{database_name}.json")
                     result = sql.database(credential, subscription_id, rg.name, server_name, database_name)
 
-                # "Microsoft.ContainerService/managedClusters"
-                # Microsoft.Compute/virtualMachineScaleSets
-                # "Microsoft.Network/connections"
-                # "Microsoft.Network/virtualNetworkGateways"
-                # "Microsoft.Network/natGateways"
-                # "Microsoft.Network/localNetworkGateways"
-                # "Microsoft.Compute/sshPublicKeys"
-                # "Microsoft.Network/privateDnsZones/virtualNetworkLinks"
-                case "microsoft.insights/webtests":
+                case "microsoft.network/natgateways":
+                    result = network.nat_gateway(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.compute/virtualmachinescalesets":
+                    result = virtual_machines.virtual_machine_scale_set(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.containerservice/managedclusters":
+                    result = containerservice.managed_cluster(credential, subscription_id, rg.name, resource.name)
+
+
+
+                # "microsoft.sqlvirtualmachine/sqlvirtualmachines"
+
+                # "microsoft.network/virtualnetworkgateways"
+                #
+                # "microsoft.network/localnetworkgateways"
+                # "microsoft.compute/sshpublickeys"
+                # "microsoft.network/routetables"
+
+
+
+                case "microsoft.insights/webtests" | "microsoft.logic/workflows":
+                    pass
+                case "microsoft.web/connections":
                     pass
                 case "microsoft.domainregistration/domains":
                     pass # ignoring domain registrations
@@ -167,7 +187,7 @@ def main():
                     pass
                 case "microsoft.visualstudio/account":
                     pass # ignoring devops subscription
-                case "microsoft.dashboard/grafana" | "microsoft.insights/components" | "microsoft.insights/actiongroups" | "microsoft.operationalinsights/workspaces" | "microsoft.alertsmanagement/actionrules" | "microsoft.insights/metricalerts" | "microsoft.monitor/accounts" | "microsoft.alertsmanagement/smartdetectoralertrules":
+                case "microsoft.operationalinsights/querypacks" | "microsoft.dashboard/grafana" | "microsoft.insights/components" | "microsoft.insights/actiongroups" | "microsoft.operationalinsights/workspaces" | "microsoft.alertsmanagement/actionrules" | "microsoft.insights/metricalerts" | "microsoft.monitor/accounts" | "microsoft.alertsmanagement/smartdetectoralertrules":
                     pass # ignoring monitoring for now
                 case "microsoft.network/networkwatchers" | "microsoft.eventgrid/systemtopics":
                     pass # ignore azure defaults

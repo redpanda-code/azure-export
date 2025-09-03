@@ -8,6 +8,7 @@ dependencies = [
     "azure-identity==1.24.0",
     "azure-mgmt-compute==36.0.0",
     "azure-mgmt-containerregistry==14.0.0",
+    "azure-mgmt-containerservice==39.1.0",
     "azure-mgmt-dns==9.0.0",
     "azure-mgmt-keyvault==12.0.0",
     "azure-mgmt-network==29.0.0",
