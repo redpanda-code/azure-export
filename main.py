@@ -20,11 +20,6 @@ from exporter_modules import sql
 from exporter_modules import containerservice
 from exporter_modules import sqlvirtualmachine
 
-config = {
-    **dotenv_values(".env"),
-    **dotenv_values(".env.secret")
-}
-
 class DatetimeHandler(jsonpickle.handlers.BaseHandler):
     def flatten(self, obj, data):
         return obj.strftime('%Y-%m-%d %H:%M:%S.%f')
@@ -61,6 +56,11 @@ def print_help():
     print("  uv run main.py /tmp/azure-backup")
 
 def main():
+    config = {
+        **dotenv_values(".env"),
+        **dotenv_values(".env.secret")
+    }
+
     # Check for command line arguments
     if len(sys.argv) < 2:
         print_help()
@@ -73,6 +73,10 @@ def main():
         client_id=config["AZURE_CLIENT_ID"],
         client_secret=config["AZURE_CLIENT_SECRET"]
     )
+
+    # TODO: test the connection to Azure
+    # do the eequivalent of ping, show version, get tenant information
+    # display a proper erorr mesage with hint: Hey maybe the secret has expired, they are valid for 1 year only
 
     ignore_resource_groups = config.get("IGNORE_RESOURCE_GROUPS", "").split(",")
     ignore_resources = config.get("IGNORE_RESOURCES", "").split(",")
@@ -184,15 +188,14 @@ def main():
 
                 case "microsoft.network/natgateways":
                     result = network.nat_gateway(credential, subscription_id, rg.name, resource.name)
-
                 case "microsoft.network/routetables":
                     result = network.route_table(credential, subscription_id, rg.name, resource.name)
-
                 case "microsoft.network/virtualnetworkgateways":
                     result = network.virtual_network_gateway(credential, subscription_id, rg.name, resource.name)
-
                 case "microsoft.network/localnetworkgateways":
                     result = network.local_network_gateway(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/privateendpoints":
+                    result = network.private_endpoint(credential, subscription_id, rg.name, resource.name)
 
                 case "microsoft.compute/virtualmachinescalesets":
                     result = virtual_machines.virtual_machine_scale_set(credential, subscription_id, rg.name, resource.name)
@@ -210,9 +213,10 @@ def main():
                     result = sqlvirtualmachine.sql_virtual_machine(credential, subscription_id, rg.name, resource.name)
                     file_path = f"{resource.name}_sqlvm.json" # avoid duplicate names
 
+                case "microsoft.logic/integrationaccounts":
+                    pass # we cant export private key
                 case "microsoft.compute/sshpublickeys":
                     pass # we cant export private key
-
                 case "microsoft.insights/webtests" | "microsoft.logic/workflows":
                     pass
                 case "microsoft.web/connections":
