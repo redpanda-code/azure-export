@@ -132,6 +132,7 @@ def private_endpoint(credential, subscription_id, resource_group_name, resource_
         resource_name
     )
     return private_endpoint
+
 def dns_zone(credential, subscription_id, resource_group_name, resource_name):
     client = NetworkManagementClient(
         credential=credential,

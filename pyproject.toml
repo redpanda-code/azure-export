@@ -10,6 +10,7 @@ dependencies = [
     "azure-mgmt-containerregistry==14.0.0",
     "azure-mgmt-containerservice==39.1.0",
     "azure-mgmt-dns==9.0.0",
+    "azure-mgmt-dnsresolver==1.1.0",
     "azure-mgmt-keyvault==12.0.0",
     "azure-mgmt-network==29.0.0",
     "azure-mgmt-postgresqlflexibleservers==1.1.0",

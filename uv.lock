@@ -35,6 +35,7 @@ dependencies = [
     { name = "azure-mgmt-containerregistry" },
     { name = "azure-mgmt-containerservice" },
     { name = "azure-mgmt-dns" },
+    { name = "azure-mgmt-dnsresolver" },
     { name = "azure-mgmt-keyvault" },
     { name = "azure-mgmt-network" },
     { name = "azure-mgmt-postgresqlflexibleservers" },
@@ -54,6 +55,7 @@ requires-dist = [
     { name = "azure-mgmt-containerregistry", specifier = "==14.0.0" },
     { name = "azure-mgmt-containerservice", specifier = "==39.1.0" },
     { name = "azure-mgmt-dns", specifier = "==9.0.0" },
+    { name = "azure-mgmt-dnsresolver", specifier = "==1.1.0" },
     { name = "azure-mgmt-keyvault", specifier = "==12.0.0" },
     { name = "azure-mgmt-network", specifier = "==29.0.0" },
     { name = "azure-mgmt-postgresqlflexibleservers", specifier = "==1.1.0" },
@@ -152,6 +154,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/9e/a8/990635b8b73252ad70b0c25f95db62d7927a32a4561d8c57bba0818a4a63/azure_mgmt_dns-9.0.0.tar.gz", hash = "sha256:89f8c4e467a94224b97bf16dd76d5bd616bf11cefe727f776618a57cc5486e37", size = 56953, upload-time = "2025-07-14T10:15:48.528Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b8/09/caa99f4d506ff0e07d158e526bb3142dcb6e759a65c27975fd045302f258/azure_mgmt_dns-9.0.0-py3-none-any.whl", hash = "sha256:00bd1d9d679d77aeba9178782d03c833549a4077147c9d78fedbfcd5909be633", size = 65319, upload-time = "2025-07-14T10:15:49.916Z" },
+]
+
+[[package]]
+name = "azure-mgmt-dnsresolver"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-common" },
+    { name = "azure-mgmt-core" },
+    { name = "isodate" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0f/f5/08f39bf335f749bf6518ba3494b13e1590ba3abbfa8d20aeb9ba6a4bc4d7/azure_mgmt_dnsresolver-1.1.0.tar.gz", hash = "sha256:96249a8910ef1b5e9126855adeffccf09a9d359588e614f91ef102b2d81f765d", size = 104104, upload-time = "2025-06-16T08:49:52.953Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/10/6b/5201a5c38a863b5bbe49fdb9d09d1c60e35d7846c8e27d5ef7bcd43b9872/azure_mgmt_dnsresolver-1.1.0-py3-none-any.whl", hash = "sha256:fd13396a7cf223ea63ad3d7083f6c87611887f428a9582341672fdc382a0072d", size = 137708, upload-time = "2025-06-16T08:49:54.255Z" },
 ]
 
 [[package]]

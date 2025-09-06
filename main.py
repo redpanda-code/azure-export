@@ -19,6 +19,7 @@ from exporter_modules import postgresql
 from exporter_modules import sql
 from exporter_modules import containerservice
 from exporter_modules import sqlvirtualmachine
+from exporter_modules import dnsresolver
 
 class DatetimeHandler(jsonpickle.handlers.BaseHandler):
     def flatten(self, obj, data):
@@ -196,6 +197,19 @@ def main():
                     result = network.local_network_gateway(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/privateendpoints":
                     result = network.private_endpoint(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.network/dnsresolvers":
+                    result = dnsresolver.dns_resolver(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.network/dnsresolvers/inboundendpoints":
+                    dns_resolver_name, endpoint_name = resource.name.split("/")
+                    file_path = f"{dns_resolver_name}_{endpoint_name}.json"
+                    result = dnsresolver.inbound_endpoint(credential, subscription_id, rg.name, dns_resolver_name, endpoint_name)
+
+                case "microsoft.network/dnsresolvers/outboundendpoints":
+                    dns_resolver_name, endpoint_name = resource.name.split("/")
+                    file_path = f"{dns_resolver_name}_{endpoint_name}.json"
+                    result = dnsresolver.outbound_endpoint(credential, subscription_id, rg.name, dns_resolver_name, endpoint_name)
 
                 case "microsoft.compute/virtualmachinescalesets":
                     result = virtual_machines.virtual_machine_scale_set(credential, subscription_id, rg.name, resource.name)
