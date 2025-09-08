@@ -48,6 +48,9 @@ def write_azure_data(result, file_path):
     d_obj = remove_property_recursive(d_obj, "earliest_restore_date")
     d_obj = remove_property_recursive(d_obj, "DeploymentToken")
     d_obj = remove_property_recursive(d_obj, "last_ownership_update_time")
+    d_obj = remove_property_recursive(d_obj, "egress_bytes_transferred")
+    d_obj = remove_property_recursive(d_obj, "ingress_bytes_transferred")
+
 
     with open(file_path, "w") as f:
         f.write(json.dumps(d_obj, indent=2))
