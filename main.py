@@ -198,6 +198,9 @@ def main():
                 case "microsoft.network/privateendpoints":
                     result = network.private_endpoint(credential, subscription_id, rg.name, resource.name)
 
+                case "microsoft.network/connections":
+                    result = network.virtual_network_gateway_connection(credential, subscription_id, rg.name, resource.name)
+
                 case "microsoft.network/dnsresolvers":
                     result = dnsresolver.dns_resolver(credential, subscription_id, rg.name, resource.name)
 
@@ -249,7 +252,7 @@ def main():
                     pass
                 case "microsoft.visualstudio/account":
                     pass # ignoring devops subscription
-                case "microsoft.operationalinsights/querypacks" | "microsoft.dashboard/grafana" | "microsoft.insights/components" | "microsoft.insights/actiongroups" | "microsoft.operationalinsights/workspaces" | "microsoft.alertsmanagement/actionrules" | "microsoft.insights/metricalerts" | "microsoft.monitor/accounts" | "microsoft.alertsmanagement/smartdetectoralertrules":
+                case "microsoft.insights/activitylogalerts" | "microsoft.operationalinsights/querypacks" | "microsoft.dashboard/grafana" | "microsoft.insights/components" | "microsoft.insights/actiongroups" | "microsoft.operationalinsights/workspaces" | "microsoft.alertsmanagement/actionrules" | "microsoft.insights/metricalerts" | "microsoft.monitor/accounts" | "microsoft.alertsmanagement/smartdetectoralertrules":
                     pass # ignoring monitoring for now
                 case "microsoft.network/networkwatchers" | "microsoft.eventgrid/systemtopics":
                     pass # ignore azure defaults

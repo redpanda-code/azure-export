@@ -122,6 +122,17 @@ def virtual_network_gateway(credential, subscription_id, resource_group_name, re
     )
     return virtual_network_gateway
 
+def virtual_network_gateway_connection(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    virtual_network_gateway_connection = client.virtual_network_gateway_connections.get(
+        resource_group_name,
+        resource_name
+    )
+    return virtual_network_gateway_connection
+
 def private_endpoint(credential, subscription_id, resource_group_name, resource_name):
     client = NetworkManagementClient(
         credential=credential,
