@@ -7,10 +7,11 @@ wheels/
 *.egg-info
 .env
 .env*
+.DS_Store
 
 # Virtual environments
 .venv
 
 
 # generated files
-export*/
+export_*/
