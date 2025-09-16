@@ -35,12 +35,23 @@ def remove_property_recursive(obj, property_name):
     else:
         return obj
 
+def sort_property_recursive(obj, property_name):
+    if isinstance(obj, dict):
+        new_obj = {}
+        for k, v in obj.items():
+            if k == property_name and isinstance(v, dict):
+                new_obj[k] = dict(sorted(v.items()))
+            else:
+                new_obj[k] = sort_property_recursive(v, property_name)
+        return new_obj
+    elif isinstance(obj, list):
+        return [sort_property_recursive(item, property_name) for item in obj]
+    else:
+        return obj
+
 def write_azure_data(result, file_path):
     d_json = jsonpickle.encode(result, indent=2) # jsonpickle tuns objecs/class into json
     d_obj = json.loads(d_json)
-
-    if "additional_properties" in d_obj:
-        d_obj["additional_properties"] = dict(sorted(d_obj["additional_properties"].items()))
 
     d_obj = remove_property_recursive(d_obj, "etag")
     d_obj = remove_property_recursive(d_obj, "py/object")
@@ -50,6 +61,7 @@ def write_azure_data(result, file_path):
     d_obj = remove_property_recursive(d_obj, "last_ownership_update_time")
     d_obj = remove_property_recursive(d_obj, "egress_bytes_transferred")
     d_obj = remove_property_recursive(d_obj, "ingress_bytes_transferred")
+    d_obj = sort_property_recursive(d_obj, "additional_properties")
 
 
     with open(file_path, "w") as f:
