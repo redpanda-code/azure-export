@@ -7,6 +7,7 @@ import jsonpickle
 import pathlib
 import datetime
 import json
+import shutil
 
 from exporter_modules import virtual_machines
 from exporter_modules import network
@@ -78,6 +79,15 @@ def print_help():
     print("  python main.py ./my-export")
     print("  uv run main.py /tmp/azure-backup")
 
+def remove_all_folders(path):
+    for subdir in path.iterdir():
+        if subdir.is_dir() and not subdir.name.startswith("."):
+            shutil.rmtree(subdir)
+
+def remove_all_json_files(path):
+    for json_file in path.rglob("*.json"):
+        json_file.unlink()
+
 def main():
     config = {
         **dotenv_values(".env"),
@@ -111,6 +121,8 @@ def main():
     output_path = pathlib.Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
+    print(f"Exporting Azure resources to {output_path}")
+    remove_all_json_files(output_path)
 
     client = ResourceManagementClient(credential=credential, subscription_id=subscription_id)
     for rg in client.resource_groups.list():
