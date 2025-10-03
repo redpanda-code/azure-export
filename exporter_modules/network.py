@@ -22,17 +22,6 @@ def public_ip_address(credential, subscription_id, resource_group_name, resource
     )
     return public_ip_address
 
-def public_ip_address(credential, subscription_id, resource_group_name, resource_name):
-    client = NetworkManagementClient(
-        credential=credential,
-        subscription_id=subscription_id
-    )
-    public_ip_address = client.public_ip_addresses.get(
-        resource_group_name,
-        resource_name
-    )
-    return public_ip_address
-
 
 def public_ip_prefix(credential, subscription_id, resource_group_name, resource_name):
     client = NetworkManagementClient(

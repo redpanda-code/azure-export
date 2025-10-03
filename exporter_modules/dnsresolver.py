@@ -1,4 +1,4 @@
-from azure.mgmt.dnsresolver import DnsResolverManagementClient
+from azure.mgmt.dnsresolver import DnsResolverManagementClient # package azure-mgmt-dnsresolver
 
 def dns_resolver(credential, subscription_id, resource_group_name, resource_name):
     client = DnsResolverManagementClient(
