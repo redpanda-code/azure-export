@@ -28,6 +28,20 @@ class DatetimeHandler(jsonpickle.handlers.BaseHandler):
 
 jsonpickle.handlers.registry.register(datetime.datetime, DatetimeHandler)
 
+def remove_nested_property(obj, path):
+    if isinstance(obj, dict):
+        if len(path) > 1 and path[0] in obj and isinstance(obj[path[0]], dict):
+            return {k: (remove_nested_property(v, path[1:]) if k == path[0] else remove_nested_property(v, path)) for k, v in obj.items()}
+        elif len(path) == 1:
+            return {k: remove_nested_property(v, path) for k, v in obj.items() if k != path[0]}
+        else:
+            return {k: remove_nested_property(v, path) for k, v in obj.items()}
+
+    elif isinstance(obj, list):
+        return [remove_nested_property(item, path) for item in obj]
+    else:
+        return obj
+
 def remove_property_recursive(obj, property_name):
     if isinstance(obj, dict):
         return {k: remove_property_recursive(v, property_name) for k, v in obj.items() if k != property_name}
@@ -62,7 +76,9 @@ def write_azure_data(result, file_path):
     d_obj = remove_property_recursive(d_obj, "last_ownership_update_time")
     d_obj = remove_property_recursive(d_obj, "egress_bytes_transferred")
     d_obj = remove_property_recursive(d_obj, "ingress_bytes_transferred")
+    d_obj = remove_property_recursive(d_obj, "type_handler_version")
     d_obj = sort_property_recursive(d_obj, "additional_properties")
+    d_obj = remove_nested_property(d_obj, ["virtual_machine_profile", "time_created"])
 
 
     with open(file_path, "w") as f:
