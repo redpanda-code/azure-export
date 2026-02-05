@@ -30,8 +30,10 @@ def public_ip_prefix(credential, subscription_id, resource_group_name, resource_
     )
     public_ip_prefix = client.public_ip_prefixes.get(
         resource_group_name,
-        resource_name
+        resource_name,
+        expand="publicIPAddresses"
     )
+
     return public_ip_prefix
 
 def network_security_group(credential, subscription_id, resource_group_name, resource_name):
