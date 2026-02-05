@@ -10,7 +10,24 @@ def dns_zone(credential, subscription_id, resource_group_name, resource_name):
         resource_group_name,
         resource_name
     )
+    r = dns_zone_records(
+        credential,
+        subscription_id,
+        resource_group_name,
+        resource_name
+    )
+    dns_zone.records = list(r)
     return dns_zone
+
+def dns_zone_records(credential, subscription_id, resource_group_name, zone_name):
+    client = DnsManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    return client.record_sets.list_by_dns_zone(
+        resource_group_name,
+        zone_name
+    )
 
 
 def private_zone(credential, subscription_id, resource_group_name, resource_name):
