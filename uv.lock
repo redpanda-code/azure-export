@@ -37,6 +37,7 @@ dependencies = [
     { name = "azure-mgmt-dns" },
     { name = "azure-mgmt-dnsresolver" },
     { name = "azure-mgmt-keyvault" },
+    { name = "azure-mgmt-mysqlflexibleservers" },
     { name = "azure-mgmt-network" },
     { name = "azure-mgmt-postgresqlflexibleservers" },
     { name = "azure-mgmt-privatedns" },
@@ -46,6 +47,7 @@ dependencies = [
     { name = "azure-mgmt-sql" },
     { name = "azure-mgmt-sqlvirtualmachine" },
     { name = "azure-mgmt-storage" },
+    { name = "azure-mgmt-web" },
     { name = "jsonpickle" },
     { name = "python-dotenv" },
 ]
@@ -59,6 +61,7 @@ requires-dist = [
     { name = "azure-mgmt-dns", specifier = "==9.0.0" },
     { name = "azure-mgmt-dnsresolver", specifier = "==1.1.0" },
     { name = "azure-mgmt-keyvault", specifier = "==12.0.0" },
+    { name = "azure-mgmt-mysqlflexibleservers", specifier = "==1.0.0" },
     { name = "azure-mgmt-network", specifier = "==29.0.0" },
     { name = "azure-mgmt-postgresqlflexibleservers", specifier = "==1.1.0" },
     { name = "azure-mgmt-privatedns", specifier = "==1.2.0" },
@@ -68,6 +71,7 @@ requires-dist = [
     { name = "azure-mgmt-sql", specifier = "==3.0.1" },
     { name = "azure-mgmt-sqlvirtualmachine", specifier = "==1.0.0b6" },
     { name = "azure-mgmt-storage", specifier = "==23.0.1" },
+    { name = "azure-mgmt-web", specifier = "==10.1.0" },
     { name = "jsonpickle", specifier = ">=4.1.1" },
     { name = "python-dotenv", specifier = "==1.1.1" },
 ]
@@ -188,6 +192,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/69/7a/c3e8af7c180eae71c1ea87595a2411a5ef3c6005c4edc797428ad61341b9/azure_mgmt_keyvault-12.0.0.tar.gz", hash = "sha256:e2cf18e8a4928b5d1cab127be42ea9ad0246d687ca12fc27a2ad66487ce1c86b", size = 98466, upload-time = "2025-07-11T04:42:32.442Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/97/cc/f539899361c1e276d026b3b6652ba1d7ee1aa7d26d525698c385f624fd7e/azure_mgmt_keyvault-12.0.0-py3-none-any.whl", hash = "sha256:621435752f236797752984773a330044a575268f8fb6a74c612e727b4742ee32", size = 141744, upload-time = "2025-07-11T04:42:33.902Z" },
+]
+
+[[package]]
+name = "azure-mgmt-mysqlflexibleservers"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-mgmt-core" },
+    { name = "msrest" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/eb/7f/47f8bc5fe5c82dfe8027e5e40e8893ff99d926fc39538c5aae39ac98bb66/azure_mgmt_mysqlflexibleservers-1.0.0.tar.gz", hash = "sha256:d077a656888a5c5977f479a244a64ac4a1d351002e99a7eddaf6a49a82192e56", size = 108286, upload-time = "2025-11-18T08:05:19.883Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ce/9b/9ce1fa52b5dd95db464e376ca33a7491d8900b6c9214871f77d80d89937c/azure_mgmt_mysqlflexibleservers-1.0.0-py3-none-any.whl", hash = "sha256:283f4f7140c5d94b5ca542fa8ebbd3b442263e770e1961590977a5cebcf9c4ad", size = 214758, upload-time = "2025-11-18T08:05:21.559Z" },
 ]
 
 [[package]]
@@ -320,6 +338,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/02/79/367314b80c39507ef59d5daf987444164a6c9ef84cb65e5e999949cfec30/azure_mgmt_storage-23.0.1.tar.gz", hash = "sha256:c3ab2ac9352d1c01d85b56d6716dcce1e4680f920b148a24b4369bb91b9223b4", size = 208118, upload-time = "2025-06-30T07:27:44.603Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/28/c0/e80fb941c0ef089436866c092fb09f95d882b8492678dbe360650df881e1/azure_mgmt_storage-23.0.1-py3-none-any.whl", hash = "sha256:c74d4ecb5100685b639506d61d7913ab8e940ae898fb0997ad13b34ed2212b43", size = 286319, upload-time = "2025-06-30T07:27:45.892Z" },
+]
+
+[[package]]
+name = "azure-mgmt-web"
+version = "10.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-mgmt-core" },
+    { name = "msrest" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/24/dc/7b96067ce47b16a36a3235d5ed3931dceaaf95253dc7dbd0b0c4b7bbc8d4/azure_mgmt_web-10.1.0.tar.gz", hash = "sha256:26d3594bbe1b30589b72922c35855bc5b74c151f0224147a60d1a75234859226", size = 573655, upload-time = "2025-11-17T09:14:54.608Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/5e/2057f4e790a870ea8f1ba46bccf7d15fbafe2d78a3b76a50e161e8944df6/azure_mgmt_web-10.1.0-py3-none-any.whl", hash = "sha256:4f6d71bc68c5278fbb34fb4c7225ae949c5336b1e2c6810c045e737d964e6602", size = 653657, upload-time = "2025-11-17T09:14:57.155Z" },
 ]
 
 [[package]]

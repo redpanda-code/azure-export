@@ -9,20 +9,22 @@ import datetime
 import json
 import shutil
 
-from exporter_modules import virtual_machines
-from exporter_modules import network
-from exporter_modules import resource_group
-from exporter_modules import storage
-from exporter_modules import keyvault
 from exporter_modules import containerregistry
-from exporter_modules import dns
-from exporter_modules import postgresql
-from exporter_modules import sql
 from exporter_modules import containerservice
-from exporter_modules import sqlvirtualmachine
+from exporter_modules import dns
 from exporter_modules import dnsresolver
+from exporter_modules import keyvault
+from exporter_modules import mysql
+from exporter_modules import network
+from exporter_modules import postgresql
 from exporter_modules import redis
 from exporter_modules import redisenterprise
+from exporter_modules import resource_group
+from exporter_modules import sql
+from exporter_modules import sqlvirtualmachine
+from exporter_modules import storage
+from exporter_modules import virtual_machines
+from exporter_modules import web
 
 class DatetimeHandler(jsonpickle.handlers.BaseHandler):
     def flatten(self, obj, data):
@@ -301,6 +303,10 @@ def main():
                 case "microsoft.cache/redisenterprise":
                     result = redisenterprise.cache(credential, subscription_id, rg.name, resource.name)
 
+                case "microsoft.dbformysql/flexibleservers":
+                    result = mysql.server(credential, subscription_id, rg.name, resource.name)
+
+
 # sql database instance
 #   Resource: sql-yw-test of type Microsoft.Sql/managedInstances
 #   Resource: mi_default_275ce4f3-33df-44cc-8e85-f9545083b8bf_10-0-0-0-24 of type Microsoft.Network/networkIntentPolicies
@@ -309,6 +315,11 @@ def main():
                 case "microsoft.sqlvirtualmachine/sqlvirtualmachines":
                     result = sqlvirtualmachine.sql_virtual_machine(credential, subscription_id, rg.name, resource.name)
                     file_path = f"{resource.name}_sqlvm.json" # avoid duplicate names
+
+                case "microsoft.web/serverfarms":
+                    result = web.server_farm(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.web/sites":
+                    result = web.web_app(credential, subscription_id, rg.name, resource.name)
 
                 case "microsoft.logic/integrationaccounts":
                     pass # we cant export private key
