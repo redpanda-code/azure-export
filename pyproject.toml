@@ -15,6 +15,8 @@ dependencies = [
     "azure-mgmt-network==29.0.0",
     "azure-mgmt-postgresqlflexibleservers==1.1.0",
     "azure-mgmt-privatedns==1.2.0",
+    "azure-mgmt-redis==14.5.0",
+    "azure-mgmt-redisenterprise==3.1.0",
     "azure-mgmt-resource==24.0.0",
     "azure-mgmt-sql==3.0.1",
     "azure-mgmt-sqlvirtualmachine==1.0.0b6",

@@ -21,6 +21,8 @@ from exporter_modules import sql
 from exporter_modules import containerservice
 from exporter_modules import sqlvirtualmachine
 from exporter_modules import dnsresolver
+from exporter_modules import redis
+from exporter_modules import redisenterprise
 
 class DatetimeHandler(jsonpickle.handlers.BaseHandler):
     def flatten(self, obj, data):
@@ -293,6 +295,11 @@ def main():
                 case "microsoft.containerservice/managedclusters":
                     result = containerservice.managed_cluster(credential, subscription_id, rg.name, resource.name)
 
+                case "microsoft.cache/redis":
+                    result = redis.cache(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.cache/redisenterprise":
+                    result = redisenterprise.cache(credential, subscription_id, rg.name, resource.name)
 
 # sql database instance
 #   Resource: sql-yw-test of type Microsoft.Sql/managedInstances

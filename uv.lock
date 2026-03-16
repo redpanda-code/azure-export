@@ -40,6 +40,8 @@ dependencies = [
     { name = "azure-mgmt-network" },
     { name = "azure-mgmt-postgresqlflexibleservers" },
     { name = "azure-mgmt-privatedns" },
+    { name = "azure-mgmt-redis" },
+    { name = "azure-mgmt-redisenterprise" },
     { name = "azure-mgmt-resource" },
     { name = "azure-mgmt-sql" },
     { name = "azure-mgmt-sqlvirtualmachine" },
@@ -60,6 +62,8 @@ requires-dist = [
     { name = "azure-mgmt-network", specifier = "==29.0.0" },
     { name = "azure-mgmt-postgresqlflexibleservers", specifier = "==1.1.0" },
     { name = "azure-mgmt-privatedns", specifier = "==1.2.0" },
+    { name = "azure-mgmt-redis", specifier = "==14.5.0" },
+    { name = "azure-mgmt-redisenterprise", specifier = "==3.1.0" },
     { name = "azure-mgmt-resource", specifier = "==24.0.0" },
     { name = "azure-mgmt-sql", specifier = "==3.0.1" },
     { name = "azure-mgmt-sqlvirtualmachine", specifier = "==1.0.0b6" },
@@ -229,6 +233,35 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/1a/42/0bd8a368afd89249dc28c5eb46a9b9ce209ab36967ab55a7bda1f60b887d/azure_mgmt_privatedns-1.2.0.tar.gz", hash = "sha256:34231872f01b94f6195d8ee5428e17469252ed04ea0828d52325ebe7bf0a120b", size = 58614, upload-time = "2024-09-23T06:08:45.752Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/eb/eb/2f7550f495570e5bba51dbbeb02b0c6e26fe683afab7fc0a9cc7d2fa439d/azure_mgmt_privatedns-1.2.0-py3-none-any.whl", hash = "sha256:1bf9d978de4d74fc683d9af42f8135dcd565075f851c7227197924dd72b0b539", size = 68601, upload-time = "2024-09-23T06:08:46.863Z" },
+]
+
+[[package]]
+name = "azure-mgmt-redis"
+version = "14.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-common" },
+    { name = "azure-mgmt-core" },
+    { name = "isodate" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7c/e2/7e4895296df120458af54186d788cb43abb95676e0a075c154606b8772ab/azure_mgmt_redis-14.5.0.tar.gz", hash = "sha256:5c3434c82492688e25b93aaf5113ecff0b92b7ad6da2a4fd4695530f82b152fa", size = 87997, upload-time = "2025-01-20T09:10:41.814Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/64/ac/8631a3eb30892252b5476c0e8a59c5819c6831e59f1ee769a2f8914baa86/azure_mgmt_redis-14.5.0-py3-none-any.whl", hash = "sha256:d98fe771a4478920bc520687ae158eb3c0e68faa073e5a27c2b6c65898572028", size = 128516, upload-time = "2025-01-20T09:10:43.765Z" },
+]
+
+[[package]]
+name = "azure-mgmt-redisenterprise"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-mgmt-core" },
+    { name = "msrest" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8a/ac/0b52c588b4655cdbcb2555208e5d0d56a2c22f4b1552946eacb0a99f0160/azure_mgmt_redisenterprise-3.1.0.tar.gz", hash = "sha256:100fe0e1c9ebbc7f85716d8ad882f6eb90b8b92c5f7024c59cc2d135515629fe", size = 79920, upload-time = "2025-10-20T07:47:39.597Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d0/c5/86c938c136201b497def9aaeb8134a870f0ac806be455481d6c565b6dcea/azure_mgmt_redisenterprise-3.1.0-py3-none-any.whl", hash = "sha256:8af01cb7929ab9ebc2d47bca104dbb6b0110e276932ec7a9f1f3d91449d4c617", size = 108790, upload-time = "2025-10-20T07:47:40.931Z" },
 ]
 
 [[package]]
