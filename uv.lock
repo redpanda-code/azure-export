@@ -31,6 +31,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "azure-identity" },
+    { name = "azure-mgmt-appcontainers" },
     { name = "azure-mgmt-compute" },
     { name = "azure-mgmt-containerinstance" },
     { name = "azure-mgmt-containerregistry" },
@@ -57,6 +58,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "azure-identity", specifier = "==1.24.0" },
+    { name = "azure-mgmt-appcontainers", specifier = "==4.0.0" },
     { name = "azure-mgmt-compute", specifier = "==36.0.0" },
     { name = "azure-mgmt-containerinstance", specifier = "==10.1.0" },
     { name = "azure-mgmt-containerregistry", specifier = "==14.0.0" },
@@ -94,6 +96,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b5/44/f3ee20bacb220b6b4a2b0a6cf7e742eecb383a5ccf604dd79ec27c286b7e/azure_identity-1.24.0.tar.gz", hash = "sha256:6c3a40b2a70af831e920b89e6421e8dcd4af78a0cb38b9642d86c67643d4930c", size = 271630, upload-time = "2025-08-07T22:27:36.258Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a9/74/17428cb429e8d52f6d0d69ed685f4760a545cb0156594963a9337b53b6c9/azure_identity-1.24.0-py3-none-any.whl", hash = "sha256:9e04997cde0ab02ed66422c74748548e620b7b29361c72ce622acab0267ff7c4", size = 187890, upload-time = "2025-08-07T22:27:38.033Z" },
+]
+
+[[package]]
+name = "azure-mgmt-appcontainers"
+version = "4.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-mgmt-core" },
+    { name = "msrest" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/73/01/e84cadcf7d71fdff9a79218c8fb165ab20ce6e64af8526be485039897fa5/azure_mgmt_appcontainers-4.0.0.tar.gz", hash = "sha256:1731136ca0166c5fbc21a58cd37ea76787d20989e7f95dc12ae627efaf1dc3a5", size = 213877, upload-time = "2025-10-24T07:28:42.834Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3e/1a/cb62ec5f12b2c7cf89e1a1607478ae3befd14420139f4cfc1dfea567645b/azure_mgmt_appcontainers-4.0.0-py3-none-any.whl", hash = "sha256:2338025ac0c3dc8867dbcda80d7446aaad3f3e8875e7cc71892e833f9ee7e0ef", size = 331814, upload-time = "2025-10-24T07:28:44.084Z" },
 ]
 
 [[package]]

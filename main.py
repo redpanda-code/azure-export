@@ -9,6 +9,7 @@ import datetime
 import json
 import shutil
 
+from exporter_modules import appcontainers
 from exporter_modules import containerinstance
 from exporter_modules import containerregistry
 from exporter_modules import containerservice
@@ -331,6 +332,10 @@ def main():
 
                 case "microsoft.containerinstance/containergroups":
                     result = containerinstance.container_group(credential, subscription_id, rg.name, resource.name)
+
+
+                case "microsoft.app/containerapps":
+                    result = appcontainers.container_app(credential, subscription_id, rg.name, resource.name)
 
                 case "microsoft.logic/integrationaccounts":
                     pass # we cant export private key
