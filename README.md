@@ -50,7 +50,7 @@ Each folder represents a resource group and contains the definitions.
 | microsoft.network/dnsresolvers/inboundendpoints | ✅ Exported |
 | microsoft.network/dnsresolvers/outboundendpoints | ✅ Exported |
 | microsoft.network/networkwatchers | ⏭️ Skipped (Azure default) |
-| microsoft.network/applicationgateways | ❌ Not handled |
+| microsoft.network/applicationgateways | ✅ Exported |
 | microsoft.network/expressroutecircuits | ❌ Not handled |
 | microsoft.network/firewalls | ❌ Not handled |
 | microsoft.network/trafficmanagerprofiles | ❌ Not handled |
@@ -111,7 +111,7 @@ Each folder represents a resource group and contains the definitions.
 | microsoft.eventgrid/systemtopics | ⏭️ Skipped (Azure default) |
 | microsoft.logic/workflows | ⏭️ Skipped |
 | microsoft.web/connections | ⏭️ Skipped |
-| microsoft.servicebus/namespaces | ❌ Not handled |
+| microsoft.servicebus/namespaces | ✅ Exported |
 | microsoft.eventhub/namespaces | ❌ Not handled |
 | microsoft.eventgrid/topics | ❌ Not handled |
 | microsoft.apimanagement/service | ❌ Not handled |

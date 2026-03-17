@@ -145,3 +145,14 @@ def dns_zone(credential, subscription_id, resource_group_name, resource_name):
         resource_name
     )
     return network_interface
+
+def application_gateway(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    application_gateway = client.application_gateways.get(
+        resource_group_name,
+        resource_name
+    )
+    return application_gateway

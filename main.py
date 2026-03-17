@@ -325,6 +325,9 @@ def main():
                 case "microsoft.servicebus/namespaces":
                     result = servicebus.servicebus(credential, subscription_id, rg.name, resource.name)
 
+                case "microsoft.network/applicationgateways":
+                    result = network.application_gateway(credential, subscription_id, rg.name, resource.name)
+
                 case "microsoft.logic/integrationaccounts":
                     pass # we cant export private key
                 case "microsoft.compute/sshpublickeys":
