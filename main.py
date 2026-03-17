@@ -9,6 +9,7 @@ import datetime
 import json
 import shutil
 
+from exporter_modules import containerinstance
 from exporter_modules import containerregistry
 from exporter_modules import containerservice
 from exporter_modules import dns
@@ -328,6 +329,9 @@ def main():
                 case "microsoft.network/applicationgateways":
                     result = network.application_gateway(credential, subscription_id, rg.name, resource.name)
 
+                case "microsoft.containerinstance/containergroups":
+                    result = containerinstance.container_group(credential, subscription_id, rg.name, resource.name)
+
                 case "microsoft.logic/integrationaccounts":
                     pass # we cant export private key
                 case "microsoft.compute/sshpublickeys":
@@ -342,8 +346,6 @@ def main():
                     pass # ignoring automation for now
                 case "microsoft.recoveryservices/vaults" | "microsoft.compute/restorepointcollections" | "microsoft.dataprotection/backupvaults":
                     pass # ignoring recovery services for now
-                case "microsoft.containerinstance/containergroups":
-                    pass # ignoring container instances for now
                 case "microsoft.documentdb/databaseaccounts":
                     pass # ignoring documentdb for now
                 case "microsoft.maintenance/maintenanceconfigurations":

@@ -18,7 +18,7 @@ Each folder represents a resource group and contains the definitions.
 | microsoft.sqlvirtualmachine/sqlvirtualmachines | ✅ Exported |
 | microsoft.compute/sshpublickeys | ⏭️ Skipped (can't export private key) |
 | microsoft.compute/restorepointcollections | ⏭️ Skipped |
-| microsoft.containerinstance/containergroups | ⏭️ Skipped |
+| microsoft.containerinstance/containergroups | ✅ Exported |
 | microsoft.compute/availabilitysets | ❌ Not handled |
 | microsoft.app/containerapps | ❌ Not handled |
 | microsoft.batch/batchaccounts | ❌ Not handled |
