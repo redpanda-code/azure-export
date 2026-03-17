@@ -44,6 +44,7 @@ dependencies = [
     { name = "azure-mgmt-redis" },
     { name = "azure-mgmt-redisenterprise" },
     { name = "azure-mgmt-resource" },
+    { name = "azure-mgmt-servicebus" },
     { name = "azure-mgmt-sql" },
     { name = "azure-mgmt-sqlvirtualmachine" },
     { name = "azure-mgmt-storage" },
@@ -68,6 +69,7 @@ requires-dist = [
     { name = "azure-mgmt-redis", specifier = "==14.5.0" },
     { name = "azure-mgmt-redisenterprise", specifier = "==3.1.0" },
     { name = "azure-mgmt-resource", specifier = "==24.0.0" },
+    { name = "azure-mgmt-servicebus", specifier = "==9.0.0" },
     { name = "azure-mgmt-sql", specifier = "==3.0.1" },
     { name = "azure-mgmt-sqlvirtualmachine", specifier = "==1.0.0b6" },
     { name = "azure-mgmt-storage", specifier = "==23.0.1" },
@@ -295,6 +297,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/50/4c/b27a3dfbedebbcc8e346a956a803528bd94a19fdf14b1de4bd781b03a6cc/azure_mgmt_resource-24.0.0.tar.gz", hash = "sha256:cf6b8995fcdd407ac9ff1dd474087129429a1d90dbb1ac77f97c19b96237b265", size = 3030022, upload-time = "2025-06-17T08:04:01.731Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/14/18/f047cb553dad6fdb65c625c4fe48552e043c4e9a859416a70c5047d07475/azure_mgmt_resource-24.0.0-py3-none-any.whl", hash = "sha256:27b32cd223e2784269f5a0db3c282042886ee4072d79cedc638438ece7cd0df4", size = 3613790, upload-time = "2025-06-17T08:04:04.046Z" },
+]
+
+[[package]]
+name = "azure-mgmt-servicebus"
+version = "9.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "azure-common" },
+    { name = "azure-mgmt-core" },
+    { name = "isodate" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/44/7d/748f8e5cbb6d1ac159c194f44597b859c5aa734d219b9fba647dd9c942e6/azure_mgmt_servicebus-9.0.0.tar.gz", hash = "sha256:1613d7e416304d6b5f4908f9622355c402614ac27ef49e56438c5c6f50f200e1", size = 172433, upload-time = "2025-04-22T09:24:45.51Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/98/e6ae212a859f8a6895e92c4889b5ee90df0aefbef9452ab7203f5d83d7be/azure_mgmt_servicebus-9.0.0-py3-none-any.whl", hash = "sha256:45c6832c68c197dcaa38dab9d58e1ca9f0f0b36a94d9d95e62520fb3eea7f003", size = 260006, upload-time = "2025-04-22T09:24:47.431Z" },
 ]
 
 [[package]]

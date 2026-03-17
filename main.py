@@ -20,6 +20,7 @@ from exporter_modules import postgresql
 from exporter_modules import redis
 from exporter_modules import redisenterprise
 from exporter_modules import resource_group
+from exporter_modules import servicebus
 from exporter_modules import sql
 from exporter_modules import sqlvirtualmachine
 from exporter_modules import storage
@@ -320,6 +321,9 @@ def main():
                     result = web.server_farm(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.web/sites":
                     result = web.web_app(credential, subscription_id, rg.name, resource.name)
+
+                case "microsoft.servicebus/namespaces":
+                    result = servicebus.servicebus(credential, subscription_id, rg.name, resource.name)
 
                 case "microsoft.logic/integrationaccounts":
                     pass # we cant export private key
