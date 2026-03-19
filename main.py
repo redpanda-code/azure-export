@@ -333,6 +333,8 @@ def main():
                 case "microsoft.containerinstance/containergroups":
                     result = containerinstance.container_group(credential, subscription_id, rg.name, resource.name)
 
+                case "microsoft.app/managedenvironments":
+                    result = appcontainers.managed_environment(credential, subscription_id, rg.name, resource.name)
 
                 case "microsoft.app/containerapps":
                     result = appcontainers.container_app(credential, subscription_id, rg.name, resource.name)
