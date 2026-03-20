@@ -209,11 +209,11 @@ def main():
                     result = virtual_machines.machine(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.compute/disks":
                     result = virtual_machines.disk(credential, subscription_id, rg.name, resource.name)
+
                 case "microsoft.network/networksecuritygroups":
                     result = network.network_security_group(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/publicipaddresses":
                     result = network.public_ip_address(credential, subscription_id, rg.name, resource.name)
-
                 case "microsoft.network/virtualnetworks":
                     result = network.virtual_network(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.compute/images":
@@ -222,17 +222,12 @@ def main():
                     result = network.network_interface(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/loadbalancers":
                     result = network.load_balancer(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.storage/storageaccounts":
-                    result = storage.storage_account(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.keyvault/vaults":
-                    result = keyvault.vault(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.containerregistry/registries":
-                    result = containerregistry.registry(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.network/dnszones":
-                    p = pathlib.Path(rg_path, "dns")
-                    p.mkdir(parents=True, exist_ok=True)
-                    file_path = pathlib.Path("dns", f"{resource.name}.json")
-                    result = dns.dns_zone(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/azurefirewalls":
+                    result = network.azure_firewall(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/firewallpolicies":
+                    result = network.firewall_policy(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/publicipprefixes":
+                    result = network.public_ip_prefix(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/privatednszones":
                     p = pathlib.Path(rg_path, "private_dns")
                     p.mkdir(parents=True, exist_ok=True)
@@ -244,11 +239,45 @@ def main():
                     p.mkdir(parents=True, exist_ok=True)
                     file_path = pathlib.Path("private_dns_link", f"{link_name}.json")
                     result = dns.virtual_network_link(credential, subscription_id, rg.name, dns_name, link_name)
+                case "microsoft.network/dnszones":
+                    p = pathlib.Path(rg_path, "dns")
+                    p.mkdir(parents=True, exist_ok=True)
+                    file_path = pathlib.Path("dns", f"{resource.name}.json")
+                    result = dns.dns_zone(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/natgateways":
+                    result = network.nat_gateway(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/routetables":
+                    result = network.route_table(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/virtualnetworkgateways":
+                    result = network.virtual_network_gateway(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/localnetworkgateways":
+                    result = network.local_network_gateway(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/privateendpoints":
+                    result = network.private_endpoint(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/connections":
+                    result = network.virtual_network_gateway_connection(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/dnsresolvers":
+                    result = dnsresolver.dns_resolver(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.network/dnsresolvers/inboundendpoints":
+                    dns_resolver_name, endpoint_name = resource.name.split("/")
+                    file_path = f"{dns_resolver_name}_{endpoint_name}.json"
+                    result = dnsresolver.inbound_endpoint(credential, subscription_id, rg.name, dns_resolver_name, endpoint_name)
+                case "microsoft.network/dnsresolvers/outboundendpoints":
+                    dns_resolver_name, endpoint_name = resource.name.split("/")
+                    file_path = f"{dns_resolver_name}_{endpoint_name}.json"
+                    result = dnsresolver.outbound_endpoint(credential, subscription_id, rg.name, dns_resolver_name, endpoint_name)
+                case "microsoft.network/applicationgateways":
+                    result = network.application_gateway(credential, subscription_id, rg.name, resource.name)
+
+
+                case "microsoft.storage/storageaccounts":
+                    result = storage.storage_account(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.keyvault/vaults":
+                    result = keyvault.vault(credential, subscription_id, rg.name, resource.name)
+                case "microsoft.containerregistry/registries":
+                    result = containerregistry.registry(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.dbforpostgresql/flexibleservers":
                     result = postgresql.server(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.network/publicipprefixes":
-                    result = network.public_ip_prefix(credential, subscription_id, rg.name, resource.name)
-                    pass
                 case "microsoft.sql/servers":
                     p = pathlib.Path(rg_path, resource.name)
                     p.mkdir(parents=True, exist_ok=True)
@@ -267,32 +296,7 @@ def main():
                     file_path = pathlib.Path(server_name, "databases", f"{database_name}.json")
                     result = sql.database(credential, subscription_id, rg.name, server_name, database_name)
 
-                case "microsoft.network/natgateways":
-                    result = network.nat_gateway(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.network/routetables":
-                    result = network.route_table(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.network/virtualnetworkgateways":
-                    result = network.virtual_network_gateway(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.network/localnetworkgateways":
-                    result = network.local_network_gateway(credential, subscription_id, rg.name, resource.name)
-                case "microsoft.network/privateendpoints":
-                    result = network.private_endpoint(credential, subscription_id, rg.name, resource.name)
 
-                case "microsoft.network/connections":
-                    result = network.virtual_network_gateway_connection(credential, subscription_id, rg.name, resource.name)
-
-                case "microsoft.network/dnsresolvers":
-                    result = dnsresolver.dns_resolver(credential, subscription_id, rg.name, resource.name)
-
-                case "microsoft.network/dnsresolvers/inboundendpoints":
-                    dns_resolver_name, endpoint_name = resource.name.split("/")
-                    file_path = f"{dns_resolver_name}_{endpoint_name}.json"
-                    result = dnsresolver.inbound_endpoint(credential, subscription_id, rg.name, dns_resolver_name, endpoint_name)
-
-                case "microsoft.network/dnsresolvers/outboundendpoints":
-                    dns_resolver_name, endpoint_name = resource.name.split("/")
-                    file_path = f"{dns_resolver_name}_{endpoint_name}.json"
-                    result = dnsresolver.outbound_endpoint(credential, subscription_id, rg.name, dns_resolver_name, endpoint_name)
 
                 case "microsoft.compute/virtualmachinescalesets":
                     result = virtual_machines.virtual_machine_scale_set(credential, subscription_id, rg.name, resource.name)
@@ -309,12 +313,6 @@ def main():
                 case "microsoft.dbformysql/flexibleservers":
                     result = mysql.server(credential, subscription_id, rg.name, resource.name)
 
-
-# sql database instance
-#   Resource: sql-yw-test of type Microsoft.Sql/managedInstances
-#   Resource: mi_default_275ce4f3-33df-44cc-8e85-f9545083b8bf_10-0-0-0-24 of type Microsoft.Network/networkIntentPolicies
-#   Resource: VirtualCluster38645a5d-0814-4ed9-bc20-16d3bb81d3bb of type Microsoft.Sql/virtualClusters
-
                 case "microsoft.sqlvirtualmachine/sqlvirtualmachines":
                     result = sqlvirtualmachine.sql_virtual_machine(credential, subscription_id, rg.name, resource.name)
                     file_path = f"{resource.name}_sqlvm.json" # avoid duplicate names
@@ -326,9 +324,6 @@ def main():
 
                 case "microsoft.servicebus/namespaces":
                     result = servicebus.servicebus(credential, subscription_id, rg.name, resource.name)
-
-                case "microsoft.network/applicationgateways":
-                    result = network.application_gateway(credential, subscription_id, rg.name, resource.name)
 
                 case "microsoft.containerinstance/containergroups":
                     result = containerinstance.container_group(credential, subscription_id, rg.name, resource.name)

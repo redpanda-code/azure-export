@@ -20,7 +20,7 @@ Each folder represents a resource group and contains the definitions.
 | microsoft.compute/restorepointcollections | ⏭️ Skipped |
 | microsoft.containerinstance/containergroups | ✅ Exported |
 | microsoft.compute/availabilitysets | ❌ Not handled |
-| microsoft.app/containerapps | ❌ Not handled |
+| microsoft.app/containerapps | ✅ Exported |
 | microsoft.batch/batchaccounts | ❌ Not handled |
 | microsoft.servicefabric/clusters | ❌ Not handled |
 | microsoft.web/serverfarms | ✅ Exported |
@@ -52,7 +52,7 @@ Each folder represents a resource group and contains the definitions.
 | microsoft.network/networkwatchers | ⏭️ Skipped (Azure default) |
 | microsoft.network/applicationgateways | ✅ Exported |
 | microsoft.network/expressroutecircuits | ❌ Not handled |
-| microsoft.network/firewalls | ❌ Not handled |
+| microsoft.network/firewalls | ✅ Exported |
 | microsoft.network/trafficmanagerprofiles | ❌ Not handled |
 | microsoft.network/frontdoors | ❌ Not handled |
 | microsoft.network/bastionhosts | ❌ Not handled |

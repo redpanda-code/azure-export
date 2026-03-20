@@ -156,3 +156,30 @@ def application_gateway(credential, subscription_id, resource_group_name, resour
         resource_name
     )
     return application_gateway
+
+def azure_firewall(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    firewall = client.azure_firewalls.get(
+        resource_group_name,
+        resource_name
+    )
+    return firewall
+
+def firewall_policy(credential, subscription_id, resource_group_name, resource_name):
+    client = NetworkManagementClient(
+        credential=credential,
+        subscription_id=subscription_id
+    )
+    firewall_policy = client.firewall_policies.get(
+        resource_group_name,
+        resource_name
+    )
+    rule_collection_groups = list(client.firewall_policy_rule_collection_groups.list(
+        resource_group_name,
+        resource_name
+    ))
+    firewall_policy.rules = rule_collection_groups
+    return firewall_policy
