@@ -8,6 +8,8 @@ import pathlib
 import datetime
 import json
 import shutil
+import logging
+
 
 from exporter_modules import appcontainers
 from exporter_modules import containerinstance
@@ -29,6 +31,8 @@ from exporter_modules import storage
 from exporter_modules import virtual_machines
 from exporter_modules import web
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 class DatetimeHandler(jsonpickle.handlers.BaseHandler):
     def flatten(self, obj, data):
         return obj.strftime('%Y-%m-%d %H:%M:%S.%f')
@@ -170,6 +174,8 @@ def main():
     print(f"Exporting Azure resources to {output_path}")
     remove_all_json_files(output_path)
 
+    used_vnet_address_space = []
+
     client = ResourceManagementClient(credential=credential, subscription_id=subscription_id)
     for rg in client.resource_groups.list():
 
@@ -216,6 +222,15 @@ def main():
                     result = network.public_ip_address(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/virtualnetworks":
                     result = network.virtual_network(credential, subscription_id, rg.name, resource.name)
+                    if len(result.address_space.address_prefixes) > 0:
+                        logger.info(f"Found multiple virtual network address space for {rg.name}/{resource.name}")
+
+                    used_vnet_address_space.append({
+                        "resource_group": rg.name,
+                        "name": resource.name,
+                        "address_space": result.address_space.address_prefixes[0]
+                    })
+
                 case "microsoft.compute/images":
                     result = virtual_machines.image(credential, subscription_id, rg.name, resource.name)
                 case "microsoft.network/networkinterfaces":
@@ -363,15 +378,20 @@ def main():
                 case "microsoft.managedidentity/userassignedidentities" | "microsoft.operationsmanagement/solutions" | "microsoft.portal/dashboards":
                     pass
                 case _:
-                    print(f"  Resource: {resource.name} of type {resource.type}")
+                    logger.info(f"  Resource: {resource.name} of type {resource.type}")
 
 
             if result is not None:
-                # print id, name, type, location, tags
-
                 file_path = pathlib.Path(rg_path, file_path)
                 write_azure_data(result, file_path)
 
+    if len(used_vnet_address_space) > 0:
+        # sort used_vnet_address_space by address_space
+        used_vnet_address_space = sorted(used_vnet_address_space, key=lambda x: x["address_space"])
+
+        p = pathlib.Path(output_path, "used_vnet_address_space.json")
+        with open(p, "w") as f:
+            f.write(json.dumps(used_vnet_address_space, indent=2))
 
     # remove all empty folders in output_path
     for dirpath, dirnames, filenames in os.walk(output_path, topdown=False):
