@@ -9,35 +9,39 @@ import datetime
 import json
 import shutil
 import logging
+import argparse
 
 
-from exporter_modules import appcontainers
-from exporter_modules import containerinstance
-from exporter_modules import containerregistry
-from exporter_modules import containerservice
-from exporter_modules import dns
-from exporter_modules import dnsresolver
-from exporter_modules import keyvault
-from exporter_modules import mysql
-from exporter_modules import network
-from exporter_modules import postgresql
-from exporter_modules import redis
-from exporter_modules import redisenterprise
-from exporter_modules import resource_group
-from exporter_modules import servicebus
-from exporter_modules import sql
-from exporter_modules import sqlvirtualmachine
-from exporter_modules import storage
-from exporter_modules import virtual_machines
-from exporter_modules import web
+from azure_export.exporter_modules import appcontainers
+from azure_export.exporter_modules import containerinstance
+from azure_export.exporter_modules import containerregistry
+from azure_export.exporter_modules import containerservice
+from azure_export.exporter_modules import dns
+from azure_export.exporter_modules import dnsresolver
+from azure_export.exporter_modules import keyvault
+from azure_export.exporter_modules import mysql
+from azure_export.exporter_modules import network
+from azure_export.exporter_modules import postgresql
+from azure_export.exporter_modules import redis
+from azure_export.exporter_modules import redisenterprise
+from azure_export.exporter_modules import resource_group
+from azure_export.exporter_modules import servicebus
+from azure_export.exporter_modules import sql
+from azure_export.exporter_modules import sqlvirtualmachine
+from azure_export.exporter_modules import storage
+from azure_export.exporter_modules import virtual_machines
+from azure_export.exporter_modules import web
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
 class DatetimeHandler(jsonpickle.handlers.BaseHandler):
     def flatten(self, obj, data):
         return obj.strftime('%Y-%m-%d %H:%M:%S.%f')
 
 jsonpickle.handlers.registry.register(datetime.datetime, DatetimeHandler)
+
+verbose = False
 
 def remove_nested_property(obj, path):
     if isinstance(obj, dict):
@@ -114,20 +118,11 @@ def write_azure_data(result, file_path):
     d_obj = remove_null_recursive(d_obj)
 
     j_content = json.dumps(d_obj, indent=2)
+    j_content = j_content.replace("RG-BOB-OFFICEIT", "rg-bob-officeit")
+    j_content = j_content.replace("RG-BOB-RISKSUITE", "rg-bob-risksuite")
 
     with open(file_path, "w") as f:
         f.write(j_content)
-
-def print_help():
-    print("Usage: python main.py <output_directory>")
-    print("       uv run main.py <output_directory>")
-    print("")
-    print("Arguments:")
-    print("  output_directory    Directory where exported Azure resources will be saved")
-    print("")
-    print("Example:")
-    print("  python main.py ./my-export")
-    print("  uv run main.py /tmp/azure-backup")
 
 def remove_all_folders(path):
     for subdir in path.iterdir():
@@ -138,18 +133,36 @@ def remove_all_json_files(path):
     for json_file in path.rglob("*.json"):
         json_file.unlink()
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        prog="azure-export",
+        description="Export Azure resources to JSON files.",
+    )
+    parser.add_argument(
+        "output_directory",
+        help="Directory where exported Azure resources will be saved",
+    )
+    parser.add_argument(
+        "--verbose", "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+    return parser.parse_args()
+
 def main():
+    args = parse_args()
+
+
+    global verbose
+    if args.verbose:
+        verbose = True
+
     config = {
         **dotenv_values(".env"),
         **dotenv_values(".env.secret")
     }
 
-    # Check for command line arguments
-    if len(sys.argv) < 2:
-        print_help()
-        sys.exit(1)
-
-    output_dir = sys.argv[1]
+    output_directory = args.output_directory
 
     credential = ClientSecretCredential(
         tenant_id=config["AZURE_TENANT_ID"],
@@ -168,7 +181,7 @@ def main():
     if not subscription_id:
         raise ValueError("AZURE_SUBSCRIPTION_ID not found in configuration")
 
-    output_path = pathlib.Path(output_dir)
+    output_path = pathlib.Path(output_directory)
     output_path.mkdir(parents=True, exist_ok=True)
 
     print(f"Exporting Azure resources to {output_path}")
@@ -179,12 +192,17 @@ def main():
     client = ResourceManagementClient(credential=credential, subscription_id=subscription_id)
     for rg in client.resource_groups.list():
 
+        # if rg.name != "rg-yw-testing": # "rg-bob-officeit"
+        #     continue
+
         if rg.name in ignore_resource_groups:
-            print(f"Ignoring resource group {rg.name}")
+            if verbose:
+                print(f"Ignoring resource group {rg.name}")
             continue
 
         if rg.name.startswith("MA_"):
-            print(f"Ignoring MA_ resource group {rg.name}")
+            if verbose:
+                print(f"Ignoring MA_ resource group {rg.name}")
             continue # skipping automatic created monitoring resource groups
 
         rg_path = pathlib.Path(output_path, rg.name)
@@ -196,7 +214,8 @@ def main():
 
         resources = list(client.resources.list_by_resource_group(rg.name))
 
-        print(f"Resource group: {rg.name} in {rg.location} ({len(resources)} resources)")
+        if verbose:
+            print(f"Resource group: {rg.name} in {rg.location} ({len(resources)} resources)")
 
         for resource in resources:
             result = None
