@@ -1,5 +1,4 @@
 import os
-import sys
 from dotenv import dotenv_values
 from azure.identity import ClientSecretCredential
 from azure.mgmt.resource import ResourceManagementClient
@@ -184,7 +183,7 @@ def main():
     output_path = pathlib.Path(output_directory)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    print(f"Exporting Azure resources to {output_path}")
+    logger.info(f"Exporting Azure resources to {output_path}")
     remove_all_json_files(output_path)
 
     used_vnet_address_space = []
@@ -192,17 +191,14 @@ def main():
     client = ResourceManagementClient(credential=credential, subscription_id=subscription_id)
     for rg in client.resource_groups.list():
 
-        # if rg.name != "rg-yw-testing": # "rg-bob-officeit"
-        #     continue
-
         if rg.name in ignore_resource_groups:
             if verbose:
-                print(f"Ignoring resource group {rg.name}")
+                logger.info(f"Ignoring resource group {rg.name}")
             continue
 
         if rg.name.startswith("MA_"):
             if verbose:
-                print(f"Ignoring MA_ resource group {rg.name}")
+                logger.info(f"Ignoring MA_ resource group {rg.name}")
             continue # skipping automatic created monitoring resource groups
 
         rg_path = pathlib.Path(output_path, rg.name)
@@ -215,14 +211,14 @@ def main():
         resources = list(client.resources.list_by_resource_group(rg.name))
 
         if verbose:
-            print(f"Resource group: {rg.name} in {rg.location} ({len(resources)} resources)")
+            logger.info(f"Resource group: {rg.name} in {rg.location} ({len(resources)} resources)")
 
         for resource in resources:
             result = None
             file_path = f"{resource.name}.json"
 
             if resource.name in ignore_resources:
-                print(f"  Ignoring resource {resource.name}")
+                logger.info(f"  Ignoring resource {resource.name}")
                 continue
 
             if str(resource.type).endswith("/extensions"):
