@@ -1,5 +1,6 @@
 from azure.mgmt.containerinstance import ContainerInstanceManagementClient
 
+
 def container_group(credential, subscription_id, resource_group_name, resource_name):
     client = ContainerInstanceManagementClient(
         credential=credential,

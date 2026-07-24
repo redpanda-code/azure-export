@@ -1,5 +1,6 @@
 from azure.mgmt.appcontainers import ContainerAppsAPIClient
 
+
 def container_app(credential, subscription_id, resource_group_name, resource_name):
     client = ContainerAppsAPIClient(
         credential=credential,

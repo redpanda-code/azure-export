@@ -1,5 +1,6 @@
 from azure.mgmt.redisenterprise import RedisEnterpriseManagementClient
 
+
 def cache(credential, subscription_id, resource_group_name, resource_name):
     client = RedisEnterpriseManagementClient(
         credential=credential,

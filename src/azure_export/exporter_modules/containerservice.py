@@ -1,5 +1,6 @@
 from azure.mgmt.containerservice import ContainerServiceClient
 
+
 def managed_cluster(credential, subscription_id, resource_group_name, resource_name):
     client = ContainerServiceClient(
         credential=credential,

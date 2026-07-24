@@ -1,5 +1,6 @@
 from azure.mgmt.servicebus import ServiceBusManagementClient
 
+
 def servicebus(credential, subscription_id, resource_group_name, resource_name):
     client = ServiceBusManagementClient(credential, subscription_id)
     resource = client.namespaces.get(

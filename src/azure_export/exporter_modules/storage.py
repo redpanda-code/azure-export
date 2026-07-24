@@ -1,5 +1,6 @@
 from azure.mgmt.storage import StorageManagementClient
 
+
 def storage_account(credential, subscription_id, resource_group_name, resource_name):
     client = StorageManagementClient(
         credential=credential,

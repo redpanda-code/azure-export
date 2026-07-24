@@ -1,5 +1,6 @@
 from azure.mgmt.web import WebSiteManagementClient
 
+
 # know as App Service Plan
 def server_farm(credential, subscription_id, resource_group_name, resource_name):
     client = WebSiteManagementClient(

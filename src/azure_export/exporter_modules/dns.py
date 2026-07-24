@@ -1,6 +1,7 @@
 from azure.mgmt.dns import DnsManagementClient
 from azure.mgmt.privatedns import PrivateDnsManagementClient
 
+
 def dns_zone(credential, subscription_id, resource_group_name, resource_name):
     client = DnsManagementClient(
         credential=credential,

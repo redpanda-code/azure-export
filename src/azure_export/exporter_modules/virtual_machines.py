@@ -1,5 +1,6 @@
 from azure.mgmt.compute import ComputeManagementClient
 
+
 def machine(credential, subscription_id, resource_group_name, resource_name):
     client = ComputeManagementClient(
         credential=credential,

@@ -1,5 +1,6 @@
 from azure.mgmt.network import NetworkManagementClient
 
+
 def virtual_network(credential, subscription_id, resource_group_name, resource_name):
     client = NetworkManagementClient(
         credential=credential,

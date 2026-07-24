@@ -1,5 +1,6 @@
 from azure.mgmt.postgresqlflexibleservers import PostgreSQLManagementClient
 
+
 def server(credential, subscription_id, resource_group_name, resource_name):
     client = PostgreSQLManagementClient(
         credential=credential,
